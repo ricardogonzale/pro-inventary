@@ -4,6 +4,7 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 import auth from "./modules/auth.js";
 import client from "./modules/client.js";
+import company from "./modules/company.js";
 
 export default new Vuex.Store({
     state: {
@@ -25,5 +26,6 @@ export default new Vuex.Store({
     modules: {
         auth,
         client,
+        company,
     },
 });

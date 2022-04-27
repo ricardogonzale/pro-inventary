@@ -258,14 +258,9 @@ export default {
                     type: 0,
                     items: [
                         {
-                            title: "Clientes",
+                            title: "Compañias",
                             icon: "mdi-account-box-multiple",
-                            link: "/listclients",
-                        },
-                        {
-                            title: "Proyectos",
-                            icon: "mdi-truck-check-outline",
-                            link: "/",
+                            link: "/listcompanys",
                         },
                     ],
                 },
@@ -275,14 +270,14 @@ export default {
                     type: 1,
                     items: [
                         {
-                            title: "Operacion 1",
-                            icon: "mdi-account-sync",
-                            link: "/contact",
+                            title: "Clientes",
+                            icon: "mdi-account-box-multiple",
+                            link: "/listclients",
                         },
                         {
-                            title: "Operacion 2",
-                            icon: "mdi-cube-send",
-                            link: "/listsender",
+                            title: "Proyectos",
+                            icon: "mdi-truck-check-outline",
+                            link: "/",
                         },
                         {
                             title: "Buscar",

@@ -32,7 +32,6 @@ class HomeController extends Controller
         return view('home');
     }
     protected function deleteCliente(Request $id){
-        $deletedUser = User::where('id', $id['id_user'])->delete();
         $user = Client::find($id['id']);
         if ($user){
             Storage::disk('public')->delete('clients/activity_memory/'.$user['activity_memory']);
@@ -53,81 +52,18 @@ class HomeController extends Controller
     {
         $contact = $data->all();
         $contact['data'] = json_decode($contact['data'],true);
-        $user = User::updateOrCreate(['id' => $contact['data']['info']['id']],[
-            'name' => $contact['data']['info']['name'],
-            'email' => $contact['data']['info']['email'],
-            'type' => 1,
-            'password' => Hash::make($contact['data']['info']['password']),
-        ]); 
-        event(new Registered($user));
-
-        // auth()->login($user);
-        $contact['data']['info']['id_user'] = $user['id'];
-
-        if ($contact['activy']['img'] != 'undefined'){
-            $file = $contact['activy']['img'];
-            $namefile = time().'-'.$contact['data']['info']['id'].'-'.preg_replace("/[^a-z0-9\_\-\.]/i", "", $contact['activy']['img']->getClientOriginalName());
-            $contact['data']['info']['activity_memory'] = $namefile;
-            Storage::disk('public')->put('clients/activity_memory/'.$namefile,\File::get($file));
+        $contact['data']['info']['id_user'] = Auth::user()->id;
+        
+        if ($contact['imagen']['img'] != 'undefined'){
+            $file = $contact['imagen']['img'];
+            $namefile = time().'-'.$contact['data']['info']['id_user'].'-'.preg_replace("/[^a-z0-9\_\-\.]/i", "", $contact['imagen']['img']->getClientOriginalName());
+            $contact['data']['info']['img'] = $namefile;
+            Storage::disk('public')->put('clients/img/'.$namefile,\File::get($file));
         }
-        $client = Client::updateOrCreate(['id_user' => $contact['data']['info']['id_user']],$contact['data']['info']);
-        return $user;
+        
+        $client = Client::Create($contact['data']['info']);
+        
+        return $client;
     }
 
-    protected function deleteCarrier(Request $id){
-        $deletedUser = User::where('id', $id['id_user'])->delete();
-        $user = Carrier::find($id['id']);
-        if ($user){
-            Storage::disk('public')->delete('carriers/logo/'.$user['logo']);
-            Storage::disk('public')->delete('carriers/documents_support/'.$user['documents_support']);
-        }
-        $deletedClient = Carrier::where('id', $id['id'])->delete();
-    }
-    protected function updateCarrier(Request $data)
-    {
-
-        $contact = $data->all();
-        $contact['data'] = json_decode($contact['data'],true);
-
-        $carrier = Carrier::updateOrCreate(['id_user' => $contact['data']['info']['id_user']],$contact['data']['info']);
-        return $carrier;
-    }
-
-    protected function dataCarrier()
-    {
-        $dataUser = Carrier::where('id_user', '=', Auth::user()->id)->get();
-        return response()->json($dataUser[0]);
-    }
-
-    
-    protected function registrarCarrier(Request $data)
-    {
-        $contact = $data->all();
-        $contact['data'] = json_decode($contact['data'],true);
-        $user = User::updateOrCreate(['id' => $contact['data']['info']['id']],[
-            'name' => $contact['data']['info']['name'],
-            'email' => $contact['data']['info']['email'],
-            'type' => 2,
-            'password' => Hash::make($contact['data']['info']['password']),
-        ]); 
-        event(new Registered($user));
-
-        // auth()->login($user);
-        $contact['data']['info']['id_user'] = $user['id'];
-
-        if ($contact['logo']['img'] != 'undefined'){
-            $file = $contact['logo']['img'];
-            $namefile = time().'-'.$contact['data']['info']['id'].'-'.preg_replace("/[^a-z0-9\_\-\.]/i", "", $contact['logo']['img']->getClientOriginalName());
-            $contact['data']['info']['logo'] = $namefile;
-            Storage::disk('public')->put('carriers/logo/'.$namefile,\File::get($file));
-        }
-        if ($contact['documents_support']['img'] != 'undefined'){
-            $file = $contact['documents_support']['img'];
-            $namefile = time().'-'.$contact['data']['info']['id'].'-'.preg_replace("/[^a-z0-9\_\-\.]/i", "", $contact['documents_support']['img']->getClientOriginalName());
-            $contact['data']['info']['documents_support'] = $namefile;
-            Storage::disk('public')->put('carriers/documents_support/'.$namefile,\File::get($file));
-        }
-        $client = Carrier::updateOrCreate(['id_user' => $contact['data']['info']['id_user']],$contact['data']['info']);
-        return $user;
-    }
 }

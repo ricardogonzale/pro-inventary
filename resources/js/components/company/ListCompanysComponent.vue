@@ -1,13 +1,13 @@
 <template>
     <v-data-table
         :headers="headers"
-        :items="clients"
+        :items="companys"
         sort-by="id"
         class="elevation-1"
     >
         <template v-slot:top>
             <v-toolbar flat>
-                <h2>Clients</h2>
+                <h2>Compañias Registradas</h2>
             </v-toolbar>
             <v-toolbar flat>
                 <v-dialog v-model="dialog" max-width="400px">
@@ -22,7 +22,7 @@
                             v-on="on"
                             style="border-radius: 30px; text-transform: none"
                         >
-                            Create Client
+                            Registrar Compañia
                         </v-btn>
                     </template>
                     <v-card>
@@ -40,22 +40,26 @@
                                 <v-container>
                                     <v-row>
                                         <v-col cols="12" sm="12" md="12">
-                                            <h6>CLIENT INFORMATION</h6>
+                                            <h6>INFORMACIÓN DE LA COMPAÑIA</h6>
                                             <br />
                                         </v-col>
                                         <v-col cols="12" sm="12" md="12">
                                             <v-text-field
-                                                v-model="editedItem.name"
+                                                v-model="
+                                                    editedItem.company_name
+                                                "
                                                 label="Nombre"
                                                 :counter="255"
                                                 required
                                                 @input="
-                                                    $v.editedItem.name.$touch()
+                                                    $v.editedItem.company_name.$touch()
                                                 "
                                                 @blur="
-                                                    $v.editedItem.name.$touch()
+                                                    $v.editedItem.company_name.$touch()
                                                 "
-                                                :error-messages="nameErrors"
+                                                :error-messages="
+                                                    company_nameErrors
+                                                "
                                                 outlined
                                             ></v-text-field>
                                         </v-col>
@@ -74,67 +78,27 @@
                                                 outlined
                                             ></v-text-field>
                                         </v-col>
-                                        <v-col cols="12" sm="6" md="6">
-                                            <v-text-field
-                                                v-model="editedItem.telephone"
-                                                label="Telefono"
-                                                outlined
-                                            ></v-text-field>
-                                        </v-col>
-                                        <v-col cols="12" sm="6" md="6">
-                                            <v-text-field
-                                                v-model="editedItem.fax"
-                                                label="Telefono"
-                                                outlined
-                                            ></v-text-field>
-                                        </v-col>
-                                        <v-col cols="12" sm="6" md="6">
-                                            <v-textarea
-                                                outlined
-                                                v-model="editedItem.address"
-                                                label="Observaciones"
-                                                placeholder="Observaciones"
-                                                rows="2"
-                                            ></v-textarea>
-                                        </v-col>
                                         <v-col cols="12" sm="12" md="12">
-                                            <v-file-input
-                                                v-model="editedItem.img"
-                                                color="deep-purple accent-4"
-                                                counter
-                                                label="Cargar memoria de actividad"
-                                                prepend-icon=""
-                                                placeholder="Cargar memoria de actividad"
-                                                append-icon="mdi-cloud-upload-outline"
+                                            <v-text-field
+                                                v-model="editedItem.password"
+                                                label="Contraseña"
+                                                required
+                                                @input="
+                                                    $v.editedItem.password.$touch()
+                                                "
+                                                @blur="
+                                                    $v.editedItem.password.$touch()
+                                                "
+                                                :error-messages="passwordErrors"
                                                 outlined
-                                                :show-size="1000"
-                                            >
-                                                <template
-                                                    v-slot:selection="{
-                                                        index,
-                                                        text,
-                                                    }"
-                                                >
-                                                    <v-chip
-                                                        v-if="index < 2"
-                                                        color="deep-purple accent-4"
-                                                        dark
-                                                        label
-                                                        small
-                                                    >
-                                                        {{ text }}
-                                                    </v-chip>
-
-                                                    <span
-                                                        v-else-if="index === 2"
-                                                        class="text-overline grey--text text--darken-3 mx-2"
-                                                    >
-                                                        +
-                                                        {{ files.length - 2 }}
-                                                        Archivos(s)
-                                                    </span>
-                                                </template>
-                                            </v-file-input>
+                                            ></v-text-field>
+                                        </v-col>
+                                        <v-col cols="12" sm="6" md="6">
+                                            <v-text-field
+                                                v-model="editedItem.phone"
+                                                label="Telefono"
+                                                outlined
+                                            ></v-text-field>
                                         </v-col>
                                     </v-row>
                                 </v-container>
@@ -189,7 +153,6 @@
     </v-data-table>
 </template>
 <script>
-import axios from "axios";
 import { validationMixin } from "vuelidate";
 import {
     required,
@@ -202,9 +165,9 @@ export default {
     mixins: [validationMixin],
     validations: {
         editedItem: {
-            name: { required, maxLength: maxLength(255) },
+            company_name: { required, maxLength: maxLength(255) },
             email: { required, email },
-            telephone: { required },
+            password: { required, minLength: minLength(8) },
         },
     },
     data: () => ({
@@ -214,78 +177,72 @@ export default {
         state: [],
         value: [],
         headers: [
-            { text: "Id", value: "id" },
+            { text: "Id", value: "id_company" },
             {
-                text: "Name",
+                text: "Nombre",
                 align: "start",
-                value: "name",
+                value: "company_name",
             },
-            { text: "Email", value: "email" },
-            { text: "Telephone", value: "telephone" },
-            { text: "Status", value: "state" },
-            { text: "Actions", value: "actions", sortable: false },
+            { text: "Correo electrónico", value: "email" },
+            { text: "Teléfono", value: "phone" },
+            { text: "Active", value: "status" },
+            { text: "Acciones", value: "actions", sortable: false },
         ],
         editedIndex: -1,
         editedItem: {
             id: null,
-            name: "",
+            company_name: "",
             email: "",
-            telephone: "",
-            fax: "",
-            address: "",
+            password: "",
+            phone: "",
         },
         defaultItem: {
             id: null,
-            name: "",
+            company_name: "",
             email: "",
-            telephone: "",
-            fax: "",
-            address: "",
-            img: [],
+            password: "",
+            phone: "",
         },
     }),
 
     computed: {
-        clients: {
+        companys: {
             get() {
-                return this.$store.state.client.clients;
+                return this.$store.state.company.companys;
             },
         },
         formTitle() {
-            return this.editedIndex === -1 ? "New Client" : "Edit Client";
+            return this.editedIndex === -1
+                ? "Nueva Compañia"
+                : "Editar Compañia";
         },
-        nameErrors() {
+        company_nameErrors() {
             const errors = [];
-            if (!this.$v.editedItem.name.$dirty) return errors;
-            !this.$v.editedItem.name.required &&
-                errors.push("This field is required.");
-            !this.$v.editedItem.name.maxLength &&
-                errors.push("The field must not contain more than 255 digits.");
+            if (!this.$v.editedItem.company_name.$dirty) return errors;
+            !this.$v.editedItem.company_name.required &&
+                errors.push("Este campo es obligatorio.");
+            !this.$v.editedItem.company_name.maxLength &&
+                errors.push("El campo no debe contener más 255 digitos.");
             return errors;
         },
         emailErrors() {
             const errors = [];
             if (!this.$v.editedItem.email.$dirty) return errors;
             !this.$v.editedItem.email.email &&
-                errors.push("The email format is invalid.");
+                errors.push("El formato del correo electrónico es invalido.");
             !this.$v.editedItem.email.required &&
-                errors.push("E-mail is required");
+                errors.push("E-mail es obligatorio");
             return errors;
         },
         passwordErrors() {
             const errors = [];
             if (!this.$v.editedItem.password.$dirty) return errors;
             !this.$v.editedItem.password.minLength &&
-                errors.push("The password must not contain less than 8 digits");
+                errors.push(
+                    "La contraseña no debe contener menos de 8 digitos"
+                );
             !this.$v.editedItem.password.required &&
-                errors.push("This field is required.");
-            return errors;
-        },
-        stateErrors() {
-            const errors = [];
-            if (!this.$v.editedItem.state.$dirty) return errors;
-            !this.$v.editedItem.state.required &&
-                errors.push("Este campo es obligatorio");
+                errors.push("Este campo es obligatorio.");
             return errors;
         },
     },
@@ -305,28 +262,28 @@ export default {
 
     methods: {
         initialize() {
-            this.clients = [];
+            this.companys = [];
         },
 
         editItem(item) {
-            this.editedIndex = this.clients.indexOf(item);
+            this.editedIndex = this.companys.indexOf(item);
             this.editedItem = Object.assign({}, item);
             this.dialog = true;
         },
 
         deleteItem(item) {
             console.log(item);
-            this.editedIndex = this.clients.indexOf(item);
+            this.editedIndex = this.companys.indexOf(item);
             this.editedItem = Object.assign({}, item);
             this.dialogDelete = true;
         },
 
         deleteItemConfirm() {
-            this.clients.splice(this.editedIndex, 1);
+            this.companys.splice(this.editedIndex, 1);
             this.$store
-                .dispatch("delete", this.editedItem)
+                .dispatch("deleteCompany", this.editedItem)
                 .then((res) => {
-                    this.$store.dispatch("getClients");
+                    this.$store.dispatch("getCompanys");
                 })
                 .catch((error) => {
                     console.log(error.response.data);
@@ -351,13 +308,6 @@ export default {
                 this.editedIndex = -1;
             });
         },
-        getState: function () {
-            axios.get("/getState").then(
-                function (response) {
-                    this.state = response.data;
-                }.bind(this)
-            );
-        },
         save() {
             this.$v.$touch();
             if (this.$v.$invalid) {
@@ -368,14 +318,12 @@ export default {
             console.log(this.editedItem);
             rawData = JSON.stringify(rawData);
             formData.append("data", rawData);
-            formData.append("imagen[img]", this.editedItem.img);
 
             if (this.editedIndex > -1) {
-                // Object.assign(this.clients[this.editedIndex], this.editedItem);
                 this.$store
-                    .dispatch("update", formData)
+                    .dispatch("updateCompany", formData)
                     .then((res) => {
-                        this.$store.dispatch("getClients");
+                        this.$store.dispatch("getCompanys");
                     })
                     .catch((error) => {
                         console.log(error.response.data);
@@ -383,9 +331,9 @@ export default {
                     });
             } else {
                 this.$store
-                    .dispatch("register", formData)
+                    .dispatch("registerCompany", formData)
                     .then((res) => {
-                        this.$store.dispatch("getClients");
+                        this.$store.dispatch("getCompanys");
                     })
                     .catch((error) => {
                         console.log(error.response.data);
@@ -396,8 +344,7 @@ export default {
         },
     },
     mounted() {
-        this.$store.dispatch("getClients");
-        this.getState();
+        this.$store.dispatch("getCompanys");
     },
 };
 </script>

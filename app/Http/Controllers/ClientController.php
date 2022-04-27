@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ClientController extends Controller
 {
@@ -53,6 +54,7 @@ class ClientController extends Controller
     public function list(Client $client)
     {
         $model = Client::all();
+        $model = Client::where('id_user', '=', Auth::user()->id)->get();
         return response()->json($model);
     }
 

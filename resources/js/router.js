@@ -3,12 +3,18 @@ import VueRouter from "vue-router";
 import store from "./store.js";
 
 import ListClients from "./components/clients/ListClientsComponent.vue";
+import ListCompanys from "./components/company/ListCompanysComponent.vue";
 
 Vue.use(VueRouter);
 
 const router = new VueRouter({
     // mode: 'history',
     routes: [
+        {
+            path: "/listcompanys",
+            name: "Listar Compañias",
+            component: ListCompanys,
+        },
         {
             path: "/listclients",
             name: "Listar Clientes",

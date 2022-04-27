@@ -2458,6 +2458,15 @@ __webpack_require__.r(__webpack_exports__);
         icon: "mdi-account-cog-outline",
         type: 0,
         items: [{
+          title: "Compañias",
+          icon: "mdi-account-box-multiple",
+          link: "/listcompanys"
+        }]
+      }, {
+        text: "Clientes",
+        icon: "mdi-book-account",
+        type: 1,
+        items: [{
           title: "Clientes",
           icon: "mdi-account-box-multiple",
           link: "/listclients"
@@ -2465,19 +2474,6 @@ __webpack_require__.r(__webpack_exports__);
           title: "Proyectos",
           icon: "mdi-truck-check-outline",
           link: "/"
-        }]
-      }, {
-        text: "Clientes",
-        icon: "mdi-book-account",
-        type: 1,
-        items: [{
-          title: "Operacion 1",
-          icon: "mdi-account-sync",
-          link: "/contact"
-        }, {
-          title: "Operacion 2",
-          icon: "mdi-cube-send",
-          link: "/listsender"
         }, {
           title: "Buscar",
           icon: "mdi-clipboard-text-search",
@@ -3347,176 +3343,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -3528,22 +3354,11 @@ __webpack_require__.r(__webpack_exports__);
         required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_2__["required"],
         maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_2__["maxLength"])(255)
       },
-      lastaname: {
-        required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_2__["required"],
-        maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_2__["maxLength"])(255)
-      },
       email: {
         required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_2__["required"],
         email: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_2__["email"]
       },
-      password: {
-        required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_2__["required"],
-        minLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_2__["minLength"])(8)
-      },
-      country: {
-        required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_2__["required"]
-      },
-      province: {
+      telephone: {
         required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_2__["required"]
       }
     }
@@ -3552,32 +3367,27 @@ __webpack_require__.r(__webpack_exports__);
     return {
       dialog: false,
       dialogDelete: false,
-      country: [],
       files: [],
-      province: [],
-      activity: [],
+      state: [],
       value: [],
       headers: [{
         text: "Id",
         value: "id"
       }, {
-        text: "Nombre",
+        text: "Name",
         align: "start",
         value: "name"
       }, {
-        text: "Apellidos",
-        value: "lastaname"
-      }, {
-        text: "Correo electrónico",
+        text: "Email",
         value: "email"
       }, {
-        text: "Teléfono",
+        text: "Telephone",
         value: "telephone"
       }, {
-        text: "Pais",
-        value: "country"
+        text: "Status",
+        value: "state"
       }, {
-        text: "Acciones",
+        text: "Actions",
         value: "actions",
         sortable: false
       }],
@@ -3585,31 +3395,19 @@ __webpack_require__.r(__webpack_exports__);
       editedItem: {
         id: null,
         name: "",
-        lastaname: "",
         email: "",
-        password: "",
         telephone: "",
-        country: "",
-        tradename: "",
-        logistic_address: "",
-        cif: "",
-        province: "",
-        activity: ""
+        fax: "",
+        address: ""
       },
       defaultItem: {
         id: null,
         name: "",
-        lastaname: "",
         email: "",
-        password: "",
         telephone: "",
-        country: null,
-        tradename: "",
-        logistic_address: "",
-        cif: "",
-        province: null,
-        activity_memory: [],
-        activity: ""
+        fax: "",
+        address: "",
+        img: []
       }
     };
   },
@@ -3620,46 +3418,33 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     formTitle: function formTitle() {
-      return this.editedIndex === -1 ? "Nuevo Distribuidor" : "Editar Distribuidor";
+      return this.editedIndex === -1 ? "New Client" : "Edit Client";
     },
     nameErrors: function nameErrors() {
       var errors = [];
       if (!this.$v.editedItem.name.$dirty) return errors;
-      !this.$v.editedItem.name.required && errors.push("Este campo es obligatorio.");
-      !this.$v.editedItem.name.maxLength && errors.push("El campo no debe contener más 255 digitos.");
-      return errors;
-    },
-    lastanameErrors: function lastanameErrors() {
-      var errors = [];
-      if (!this.$v.editedItem.lastaname.$dirty) return errors;
-      !this.$v.editedItem.lastaname.required && errors.push("Este campo es obligatorio.");
-      !this.$v.editedItem.lastaname.maxLength && errors.push("El campo no debe contener más 255 digitos.");
+      !this.$v.editedItem.name.required && errors.push("This field is required.");
+      !this.$v.editedItem.name.maxLength && errors.push("The field must not contain more than 255 digits.");
       return errors;
     },
     emailErrors: function emailErrors() {
       var errors = [];
       if (!this.$v.editedItem.email.$dirty) return errors;
-      !this.$v.editedItem.email.email && errors.push("El formato del correo electrónico es invalido.");
-      !this.$v.editedItem.email.required && errors.push("E-mail es obligatorio");
+      !this.$v.editedItem.email.email && errors.push("The email format is invalid.");
+      !this.$v.editedItem.email.required && errors.push("E-mail is required");
       return errors;
     },
     passwordErrors: function passwordErrors() {
       var errors = [];
       if (!this.$v.editedItem.password.$dirty) return errors;
-      !this.$v.editedItem.password.minLength && errors.push("La contraseña no debe contener menos de 8 digitos");
-      !this.$v.editedItem.password.required && errors.push("Este campo es obligatorio.");
+      !this.$v.editedItem.password.minLength && errors.push("The password must not contain less than 8 digits");
+      !this.$v.editedItem.password.required && errors.push("This field is required.");
       return errors;
     },
-    countryErrors: function countryErrors() {
+    stateErrors: function stateErrors() {
       var errors = [];
-      if (!this.$v.editedItem.country.$dirty) return errors;
-      !this.$v.editedItem.country.required && errors.push("Este campo es obligatorio");
-      return errors;
-    },
-    provinceErrors: function provinceErrors() {
-      var errors = [];
-      if (!this.$v.editedItem.province.$dirty) return errors;
-      !this.$v.editedItem.province.required && errors.push("Este campo es obligatorio");
+      if (!this.$v.editedItem.state.$dirty) return errors;
+      !this.$v.editedItem.state.required && errors.push("Este campo es obligatorio");
       return errors;
     }
   },
@@ -3720,19 +3505,9 @@ __webpack_require__.r(__webpack_exports__);
         _this3.editedIndex = -1;
       });
     },
-    getCountry: function getCountry() {
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/getCountry").then(function (response) {
-        this.country = response.data;
-      }.bind(this));
-    },
-    getProvince: function getProvince() {
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/getProvince").then(function (response) {
-        this.province = response.data;
-      }.bind(this));
-    },
-    getActivity: function getActivity() {
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/getActivity").then(function (response) {
-        this.activity = response.data;
+    getState: function getState() {
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/getState").then(function (response) {
+        this.state = response.data;
       }.bind(this));
     },
     save: function save() {
@@ -3751,7 +3526,7 @@ __webpack_require__.r(__webpack_exports__);
       console.log(this.editedItem);
       rawData = JSON.stringify(rawData);
       formData.append("data", rawData);
-      formData.append("activy[img]", this.editedItem.activity_memory);
+      formData.append("imagen[img]", this.editedItem.img);
 
       if (this.editedIndex > -1) {
         // Object.assign(this.clients[this.editedIndex], this.editedItem);
@@ -3775,9 +3550,370 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.$store.dispatch("getClients");
-    this.getCountry();
-    this.getProvince();
-    this.getActivity();
+    this.getState();
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/company/ListCompanysComponent.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/company/ListCompanysComponent.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuelidate__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuelidate */ "./node_modules/vuelidate/lib/index.js");
+/* harmony import */ var vuelidate__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vuelidate__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  mixins: [vuelidate__WEBPACK_IMPORTED_MODULE_0__["validationMixin"]],
+  validations: {
+    editedItem: {
+      company_name: {
+        required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["required"],
+        maxLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["maxLength"])(255)
+      },
+      email: {
+        required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["required"],
+        email: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["email"]
+      },
+      password: {
+        required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["required"],
+        minLength: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_1__["minLength"])(8)
+      }
+    }
+  },
+  data: function data() {
+    return {
+      dialog: false,
+      dialogDelete: false,
+      files: [],
+      state: [],
+      value: [],
+      headers: [{
+        text: "Id",
+        value: "id_company"
+      }, {
+        text: "Nombre",
+        align: "start",
+        value: "company_name"
+      }, {
+        text: "Correo electrónico",
+        value: "email"
+      }, {
+        text: "Teléfono",
+        value: "phone"
+      }, {
+        text: "Active",
+        value: "status"
+      }, {
+        text: "Acciones",
+        value: "actions",
+        sortable: false
+      }],
+      editedIndex: -1,
+      editedItem: {
+        id: null,
+        company_name: "",
+        email: "",
+        password: "",
+        phone: ""
+      },
+      defaultItem: {
+        id: null,
+        company_name: "",
+        email: "",
+        password: "",
+        phone: ""
+      }
+    };
+  },
+  computed: {
+    companys: {
+      get: function get() {
+        return this.$store.state.company.companys;
+      }
+    },
+    formTitle: function formTitle() {
+      return this.editedIndex === -1 ? "Nueva Compañia" : "Editar Compañia";
+    },
+    company_nameErrors: function company_nameErrors() {
+      var errors = [];
+      if (!this.$v.editedItem.company_name.$dirty) return errors;
+      !this.$v.editedItem.company_name.required && errors.push("Este campo es obligatorio.");
+      !this.$v.editedItem.company_name.maxLength && errors.push("El campo no debe contener más 255 digitos.");
+      return errors;
+    },
+    emailErrors: function emailErrors() {
+      var errors = [];
+      if (!this.$v.editedItem.email.$dirty) return errors;
+      !this.$v.editedItem.email.email && errors.push("El formato del correo electrónico es invalido.");
+      !this.$v.editedItem.email.required && errors.push("E-mail es obligatorio");
+      return errors;
+    },
+    passwordErrors: function passwordErrors() {
+      var errors = [];
+      if (!this.$v.editedItem.password.$dirty) return errors;
+      !this.$v.editedItem.password.minLength && errors.push("La contraseña no debe contener menos de 8 digitos");
+      !this.$v.editedItem.password.required && errors.push("Este campo es obligatorio.");
+      return errors;
+    }
+  },
+  watch: {
+    dialog: function dialog(val) {
+      val || this.close();
+    },
+    dialogDelete: function dialogDelete(val) {
+      val || this.closeDelete();
+    }
+  },
+  created: function created() {
+    this.initialize();
+  },
+  methods: {
+    initialize: function initialize() {
+      this.companys = [];
+    },
+    editItem: function editItem(item) {
+      this.editedIndex = this.companys.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialog = true;
+    },
+    deleteItem: function deleteItem(item) {
+      console.log(item);
+      this.editedIndex = this.companys.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialogDelete = true;
+    },
+    deleteItemConfirm: function deleteItemConfirm() {
+      var _this = this;
+
+      this.companys.splice(this.editedIndex, 1);
+      this.$store.dispatch("deleteCompany", this.editedItem).then(function (res) {
+        _this.$store.dispatch("getCompanys");
+      })["catch"](function (error) {
+        console.log(error.response.data);
+        _this.registerRequestSent = false;
+      });
+      this.closeDelete();
+    },
+    close: function close() {
+      var _this2 = this;
+
+      this.$v.$reset();
+      this.dialog = false;
+      this.$nextTick(function () {
+        _this2.editedItem = Object.assign({}, _this2.defaultItem);
+        _this2.editedIndex = -1;
+      });
+    },
+    closeDelete: function closeDelete() {
+      var _this3 = this;
+
+      this.dialogDelete = false;
+      this.$nextTick(function () {
+        _this3.editedItem = Object.assign({}, _this3.defaultItem);
+        _this3.editedIndex = -1;
+      });
+    },
+    save: function save() {
+      var _this4 = this;
+
+      this.$v.$touch();
+
+      if (this.$v.$invalid) {
+        return;
+      }
+
+      var formData = new FormData();
+      var rawData = {
+        info: this.editedItem
+      };
+      console.log(this.editedItem);
+      rawData = JSON.stringify(rawData);
+      formData.append("data", rawData);
+
+      if (this.editedIndex > -1) {
+        this.$store.dispatch("updateCompany", formData).then(function (res) {
+          _this4.$store.dispatch("getCompanys");
+        })["catch"](function (error) {
+          console.log(error.response.data);
+          _this4.registerRequestSent = false;
+        });
+      } else {
+        this.$store.dispatch("registerCompany", formData).then(function (res) {
+          _this4.$store.dispatch("getCompanys");
+        })["catch"](function (error) {
+          console.log(error.response.data);
+          _this4.registerRequestSent = false;
+        });
+      }
+
+      this.close();
+    }
+  },
+  mounted: function mounted() {
+    this.$store.dispatch("getCompanys");
   }
 });
 
@@ -3834,6 +3970,25 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 // module
 exports.push([module.i, "\n.col[data-v-164809b6],\r\n.col-1[data-v-164809b6],\r\n.col-2[data-v-164809b6],\r\n.col-3[data-v-164809b6],\r\n.col-4[data-v-164809b6],\r\n.col-5[data-v-164809b6],\r\n.col-6[data-v-164809b6],\r\n.col-7[data-v-164809b6],\r\n.col-8[data-v-164809b6],\r\n.col-9[data-v-164809b6],\r\n.col-10[data-v-164809b6],\r\n.col-11[data-v-164809b6],\r\n.col-12[data-v-164809b6],\r\n.col-auto[data-v-164809b6],\r\n.col-lg[data-v-164809b6],\r\n.col-lg-1[data-v-164809b6],\r\n.col-lg-2[data-v-164809b6],\r\n.col-lg-3[data-v-164809b6],\r\n.col-lg-4[data-v-164809b6],\r\n.col-lg-5[data-v-164809b6],\r\n.col-lg-6[data-v-164809b6],\r\n.col-lg-7[data-v-164809b6],\r\n.col-lg-8[data-v-164809b6],\r\n.col-lg-9[data-v-164809b6],\r\n.col-lg-10[data-v-164809b6],\r\n.col-lg-11[data-v-164809b6],\r\n.col-lg-12[data-v-164809b6],\r\n.col-lg-auto[data-v-164809b6],\r\n.col-md[data-v-164809b6],\r\n.col-md-1[data-v-164809b6],\r\n.col-md-2[data-v-164809b6],\r\n.col-md-3[data-v-164809b6],\r\n.col-md-4[data-v-164809b6],\r\n.col-md-5[data-v-164809b6],\r\n.col-md-6[data-v-164809b6],\r\n.col-md-7[data-v-164809b6],\r\n.col-md-8[data-v-164809b6],\r\n.col-md-9[data-v-164809b6],\r\n.col-md-10[data-v-164809b6],\r\n.col-md-11[data-v-164809b6],\r\n.col-md-12[data-v-164809b6],\r\n.col-md-auto[data-v-164809b6],\r\n.col-sm[data-v-164809b6],\r\n.col-sm-1[data-v-164809b6],\r\n.col-sm-2[data-v-164809b6],\r\n.col-sm-3[data-v-164809b6],\r\n.col-sm-4[data-v-164809b6],\r\n.col-sm-5[data-v-164809b6],\r\n.col-sm-6[data-v-164809b6],\r\n.col-sm-7[data-v-164809b6],\r\n.col-sm-8[data-v-164809b6],\r\n.col-sm-9[data-v-164809b6],\r\n.col-sm-10[data-v-164809b6],\r\n.col-sm-11[data-v-164809b6],\r\n.col-sm-12[data-v-164809b6],\r\n.col-sm-auto[data-v-164809b6],\r\n.col-xl[data-v-164809b6],\r\n.col-xl-1[data-v-164809b6],\r\n.col-xl-2[data-v-164809b6],\r\n.col-xl-3[data-v-164809b6],\r\n.col-xl-4[data-v-164809b6],\r\n.col-xl-5[data-v-164809b6],\r\n.col-xl-6[data-v-164809b6],\r\n.col-xl-7[data-v-164809b6],\r\n.col-xl-8[data-v-164809b6],\r\n.col-xl-9[data-v-164809b6],\r\n.col-xl-10[data-v-164809b6],\r\n.col-xl-11[data-v-164809b6],\r\n.col-xl-12[data-v-164809b6],\r\n.col-xl-auto[data-v-164809b6] {\r\n    width: 100%;\r\n    padding: 0px 12px;\n}\n.v-dialog__content[data-v-164809b6] {\r\n    position: absolute;\n}\r\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/company/ListCompanysComponent.vue?vue&type=style&index=0&id=45c3f31c&scoped=true&lang=css&":
+/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/company/ListCompanysComponent.vue?vue&type=style&index=0&id=45c3f31c&scoped=true&lang=css& ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.col[data-v-45c3f31c],\r\n.col-1[data-v-45c3f31c],\r\n.col-2[data-v-45c3f31c],\r\n.col-3[data-v-45c3f31c],\r\n.col-4[data-v-45c3f31c],\r\n.col-5[data-v-45c3f31c],\r\n.col-6[data-v-45c3f31c],\r\n.col-7[data-v-45c3f31c],\r\n.col-8[data-v-45c3f31c],\r\n.col-9[data-v-45c3f31c],\r\n.col-10[data-v-45c3f31c],\r\n.col-11[data-v-45c3f31c],\r\n.col-12[data-v-45c3f31c],\r\n.col-auto[data-v-45c3f31c],\r\n.col-lg[data-v-45c3f31c],\r\n.col-lg-1[data-v-45c3f31c],\r\n.col-lg-2[data-v-45c3f31c],\r\n.col-lg-3[data-v-45c3f31c],\r\n.col-lg-4[data-v-45c3f31c],\r\n.col-lg-5[data-v-45c3f31c],\r\n.col-lg-6[data-v-45c3f31c],\r\n.col-lg-7[data-v-45c3f31c],\r\n.col-lg-8[data-v-45c3f31c],\r\n.col-lg-9[data-v-45c3f31c],\r\n.col-lg-10[data-v-45c3f31c],\r\n.col-lg-11[data-v-45c3f31c],\r\n.col-lg-12[data-v-45c3f31c],\r\n.col-lg-auto[data-v-45c3f31c],\r\n.col-md[data-v-45c3f31c],\r\n.col-md-1[data-v-45c3f31c],\r\n.col-md-2[data-v-45c3f31c],\r\n.col-md-3[data-v-45c3f31c],\r\n.col-md-4[data-v-45c3f31c],\r\n.col-md-5[data-v-45c3f31c],\r\n.col-md-6[data-v-45c3f31c],\r\n.col-md-7[data-v-45c3f31c],\r\n.col-md-8[data-v-45c3f31c],\r\n.col-md-9[data-v-45c3f31c],\r\n.col-md-10[data-v-45c3f31c],\r\n.col-md-11[data-v-45c3f31c],\r\n.col-md-12[data-v-45c3f31c],\r\n.col-md-auto[data-v-45c3f31c],\r\n.col-sm[data-v-45c3f31c],\r\n.col-sm-1[data-v-45c3f31c],\r\n.col-sm-2[data-v-45c3f31c],\r\n.col-sm-3[data-v-45c3f31c],\r\n.col-sm-4[data-v-45c3f31c],\r\n.col-sm-5[data-v-45c3f31c],\r\n.col-sm-6[data-v-45c3f31c],\r\n.col-sm-7[data-v-45c3f31c],\r\n.col-sm-8[data-v-45c3f31c],\r\n.col-sm-9[data-v-45c3f31c],\r\n.col-sm-10[data-v-45c3f31c],\r\n.col-sm-11[data-v-45c3f31c],\r\n.col-sm-12[data-v-45c3f31c],\r\n.col-sm-auto[data-v-45c3f31c],\r\n.col-xl[data-v-45c3f31c],\r\n.col-xl-1[data-v-45c3f31c],\r\n.col-xl-2[data-v-45c3f31c],\r\n.col-xl-3[data-v-45c3f31c],\r\n.col-xl-4[data-v-45c3f31c],\r\n.col-xl-5[data-v-45c3f31c],\r\n.col-xl-6[data-v-45c3f31c],\r\n.col-xl-7[data-v-45c3f31c],\r\n.col-xl-8[data-v-45c3f31c],\r\n.col-xl-9[data-v-45c3f31c],\r\n.col-xl-10[data-v-45c3f31c],\r\n.col-xl-11[data-v-45c3f31c],\r\n.col-xl-12[data-v-45c3f31c],\r\n.col-xl-auto[data-v-45c3f31c] {\r\n    width: 100%;\r\n    padding: 0px 12px;\n}\n.v-dialog__content[data-v-45c3f31c] {\r\n    position: absolute;\n}\r\n", ""]);
 
 // exports
 
@@ -26746,6 +26901,36 @@ if(false) {}
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/company/ListCompanysComponent.vue?vue&type=style&index=0&id=45c3f31c&scoped=true&lang=css&":
+/*!***************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/company/ListCompanysComponent.vue?vue&type=style&index=0&id=45c3f31c&scoped=true&lang=css& ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./ListCompanysComponent.vue?vue&type=style&index=0&id=45c3f31c&scoped=true&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/company/ListCompanysComponent.vue?vue&type=style&index=0&id=45c3f31c&scoped=true&lang=css&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/lib/addStyles.js":
 /*!****************************************************!*\
   !*** ./node_modules/style-loader/lib/addStyles.js ***!
@@ -28928,7 +29113,7 @@ var render = function () {
           fn: function () {
             return [
               _c("v-toolbar", { attrs: { flat: "" } }, [
-                _c("h2", [_vm._v("Distribuidores Registrados")]),
+                _c("h2", [_vm._v("Clients")]),
               ]),
               _vm._v(" "),
               _c(
@@ -28938,7 +29123,7 @@ var render = function () {
                   _c(
                     "v-dialog",
                     {
-                      attrs: { "max-width": "800px" },
+                      attrs: { "max-width": "400px" },
                       scopedSlots: _vm._u([
                         {
                           key: "activator",
@@ -28971,7 +29156,7 @@ var render = function () {
                                 ),
                                 [
                                   _vm._v(
-                                    "\n                        Registrar Distribuidor\n                    "
+                                    "\n                        Create Client\n                    "
                                   ),
                                 ]
                               ),
@@ -29034,645 +29219,21 @@ var render = function () {
                                               attrs: {
                                                 cols: "12",
                                                 sm: "12",
-                                                md: "6",
+                                                md: "12",
                                               },
                                             },
                                             [
-                                              _c(
-                                                "v-row",
-                                                [
-                                                  _c(
-                                                    "v-col",
-                                                    {
-                                                      attrs: {
-                                                        cols: "12",
-                                                        sm: "12",
-                                                        md: "12",
-                                                      },
-                                                    },
-                                                    [
-                                                      _c("h6", [
-                                                        _vm._v(
-                                                          "PERSONA DE CONTACTO"
-                                                        ),
-                                                      ]),
-                                                      _vm._v(" "),
-                                                      _c("br"),
-                                                    ]
-                                                  ),
-                                                  _vm._v(" "),
-                                                  _c(
-                                                    "v-col",
-                                                    {
-                                                      attrs: {
-                                                        cols: "12",
-                                                        sm: "6",
-                                                        md: "6",
-                                                      },
-                                                    },
-                                                    [
-                                                      _c("v-text-field", {
-                                                        attrs: {
-                                                          label: "Nombre",
-                                                          counter: 255,
-                                                          required: "",
-                                                          "error-messages":
-                                                            _vm.nameErrors,
-                                                          outlined: "",
-                                                        },
-                                                        on: {
-                                                          input: function (
-                                                            $event
-                                                          ) {
-                                                            return _vm.$v.editedItem.name.$touch()
-                                                          },
-                                                          blur: function (
-                                                            $event
-                                                          ) {
-                                                            return _vm.$v.editedItem.name.$touch()
-                                                          },
-                                                        },
-                                                        model: {
-                                                          value:
-                                                            _vm.editedItem.name,
-                                                          callback: function (
-                                                            $$v
-                                                          ) {
-                                                            _vm.$set(
-                                                              _vm.editedItem,
-                                                              "name",
-                                                              $$v
-                                                            )
-                                                          },
-                                                          expression:
-                                                            "\n                                                        editedItem.name\n                                                    ",
-                                                        },
-                                                      }),
-                                                    ],
-                                                    1
-                                                  ),
-                                                  _vm._v(" "),
-                                                  _c(
-                                                    "v-col",
-                                                    {
-                                                      attrs: {
-                                                        cols: "12",
-                                                        sm: "6",
-                                                        md: "6",
-                                                      },
-                                                    },
-                                                    [
-                                                      _c("v-text-field", {
-                                                        attrs: {
-                                                          label: "Apellidos",
-                                                          counter: 255,
-                                                          required: "",
-                                                          "error-messages":
-                                                            _vm.lastanameErrors,
-                                                          outlined: "",
-                                                        },
-                                                        on: {
-                                                          input: function (
-                                                            $event
-                                                          ) {
-                                                            return _vm.$v.editedItem.lastaname.$touch()
-                                                          },
-                                                          blur: function (
-                                                            $event
-                                                          ) {
-                                                            return _vm.$v.editedItem.lastaname.$touch()
-                                                          },
-                                                        },
-                                                        model: {
-                                                          value:
-                                                            _vm.editedItem
-                                                              .lastaname,
-                                                          callback: function (
-                                                            $$v
-                                                          ) {
-                                                            _vm.$set(
-                                                              _vm.editedItem,
-                                                              "lastaname",
-                                                              $$v
-                                                            )
-                                                          },
-                                                          expression:
-                                                            "\n                                                        editedItem.lastaname\n                                                    ",
-                                                        },
-                                                      }),
-                                                    ],
-                                                    1
-                                                  ),
-                                                  _vm._v(" "),
-                                                  _c(
-                                                    "v-col",
-                                                    {
-                                                      attrs: {
-                                                        cols: "12",
-                                                        sm: "12",
-                                                        md: "12",
-                                                      },
-                                                    },
-                                                    [
-                                                      _c("v-text-field", {
-                                                        attrs: {
-                                                          label:
-                                                            "Correo electrónico",
-                                                          required: "",
-                                                          "error-messages":
-                                                            _vm.emailErrors,
-                                                          outlined: "",
-                                                        },
-                                                        on: {
-                                                          input: function (
-                                                            $event
-                                                          ) {
-                                                            return _vm.$v.editedItem.email.$touch()
-                                                          },
-                                                          blur: function (
-                                                            $event
-                                                          ) {
-                                                            return _vm.$v.editedItem.email.$touch()
-                                                          },
-                                                        },
-                                                        model: {
-                                                          value:
-                                                            _vm.editedItem
-                                                              .email,
-                                                          callback: function (
-                                                            $$v
-                                                          ) {
-                                                            _vm.$set(
-                                                              _vm.editedItem,
-                                                              "email",
-                                                              $$v
-                                                            )
-                                                          },
-                                                          expression:
-                                                            "\n                                                        editedItem.email\n                                                    ",
-                                                        },
-                                                      }),
-                                                    ],
-                                                    1
-                                                  ),
-                                                  _vm._v(" "),
-                                                  _c(
-                                                    "v-col",
-                                                    {
-                                                      attrs: {
-                                                        cols: "12",
-                                                        sm: "12",
-                                                        md: "12",
-                                                      },
-                                                    },
-                                                    [
-                                                      _c("v-text-field", {
-                                                        attrs: {
-                                                          label: "Contraseña",
-                                                          required: "",
-                                                          "error-messages":
-                                                            _vm.passwordErrors,
-                                                          outlined: "",
-                                                        },
-                                                        on: {
-                                                          input: function (
-                                                            $event
-                                                          ) {
-                                                            return _vm.$v.editedItem.password.$touch()
-                                                          },
-                                                          blur: function (
-                                                            $event
-                                                          ) {
-                                                            return _vm.$v.editedItem.password.$touch()
-                                                          },
-                                                        },
-                                                        model: {
-                                                          value:
-                                                            _vm.editedItem
-                                                              .password,
-                                                          callback: function (
-                                                            $$v
-                                                          ) {
-                                                            _vm.$set(
-                                                              _vm.editedItem,
-                                                              "password",
-                                                              $$v
-                                                            )
-                                                          },
-                                                          expression:
-                                                            "\n                                                        editedItem.password\n                                                    ",
-                                                        },
-                                                      }),
-                                                    ],
-                                                    1
-                                                  ),
-                                                  _vm._v(" "),
-                                                  _c(
-                                                    "v-col",
-                                                    {
-                                                      attrs: {
-                                                        cols: "12",
-                                                        sm: "6",
-                                                        md: "6",
-                                                      },
-                                                    },
-                                                    [
-                                                      _c("v-text-field", {
-                                                        attrs: {
-                                                          label: "Telefono",
-                                                          outlined: "",
-                                                        },
-                                                        model: {
-                                                          value:
-                                                            _vm.editedItem
-                                                              .telephone,
-                                                          callback: function (
-                                                            $$v
-                                                          ) {
-                                                            _vm.$set(
-                                                              _vm.editedItem,
-                                                              "telephone",
-                                                              $$v
-                                                            )
-                                                          },
-                                                          expression:
-                                                            "\n                                                        editedItem.telephone\n                                                    ",
-                                                        },
-                                                      }),
-                                                    ],
-                                                    1
-                                                  ),
-                                                  _vm._v(" "),
-                                                  _c(
-                                                    "v-col",
-                                                    {
-                                                      attrs: {
-                                                        cols: "12",
-                                                        sm: "6",
-                                                        md: "6",
-                                                      },
-                                                    },
-                                                    [
-                                                      _c("v-select", {
-                                                        attrs: {
-                                                          items: _vm.country,
-                                                          "item-text": "name",
-                                                          "item-value": "id",
-                                                          label: "Pais",
-                                                          required: "",
-                                                          "error-messages":
-                                                            _vm.countryErrors,
-                                                          outlined: "",
-                                                        },
-                                                        on: {
-                                                          change: function (
-                                                            $event
-                                                          ) {
-                                                            return _vm.$v.editedItem.country.$touch()
-                                                          },
-                                                          blur: function (
-                                                            $event
-                                                          ) {
-                                                            return _vm.$v.editedItem.country.$touch()
-                                                          },
-                                                        },
-                                                        model: {
-                                                          value:
-                                                            _vm.editedItem
-                                                              .country,
-                                                          callback: function (
-                                                            $$v
-                                                          ) {
-                                                            _vm.$set(
-                                                              _vm.editedItem,
-                                                              "country",
-                                                              $$v
-                                                            )
-                                                          },
-                                                          expression:
-                                                            "\n                                                        editedItem.country\n                                                    ",
-                                                        },
-                                                      }),
-                                                    ],
-                                                    1
-                                                  ),
-                                                ],
-                                                1
-                                              ),
-                                            ],
-                                            1
+                                              _c("h6", [
+                                                _vm._v("CLIENT INFORMATION"),
+                                              ]),
+                                              _vm._v(" "),
+                                              _c("br"),
+                                            ]
                                           ),
                                           _vm._v(" "),
                                           _c(
                                             "v-col",
                                             {
-                                              attrs: {
-                                                cols: "12",
-                                                sm: "12",
-                                                md: "6",
-                                              },
-                                            },
-                                            [
-                                              _c(
-                                                "v-row",
-                                                [
-                                                  _c(
-                                                    "v-col",
-                                                    {
-                                                      attrs: {
-                                                        cols: "12",
-                                                        sm: "12",
-                                                        md: "12",
-                                                      },
-                                                    },
-                                                    [
-                                                      _c("h6", [
-                                                        _vm._v(
-                                                          "\n                                                    COMPAÑÍA DISTRIBUIDORA\n                                                "
-                                                        ),
-                                                      ]),
-                                                      _vm._v(" "),
-                                                      _c("br"),
-                                                    ]
-                                                  ),
-                                                  _vm._v(" "),
-                                                  _c(
-                                                    "v-col",
-                                                    {
-                                                      attrs: {
-                                                        cols: "12",
-                                                        sm: "12",
-                                                        md: "12",
-                                                      },
-                                                    },
-                                                    [
-                                                      _c("v-text-field", {
-                                                        attrs: {
-                                                          label:
-                                                            "Nombre comercial",
-                                                          outlined: "",
-                                                        },
-                                                        model: {
-                                                          value:
-                                                            _vm.editedItem
-                                                              .tradename,
-                                                          callback: function (
-                                                            $$v
-                                                          ) {
-                                                            _vm.$set(
-                                                              _vm.editedItem,
-                                                              "tradename",
-                                                              $$v
-                                                            )
-                                                          },
-                                                          expression:
-                                                            "\n                                                        editedItem.tradename\n                                                    ",
-                                                        },
-                                                      }),
-                                                    ],
-                                                    1
-                                                  ),
-                                                  _vm._v(" "),
-                                                  _c(
-                                                    "v-col",
-                                                    {
-                                                      attrs: {
-                                                        cols: "12",
-                                                        sm: "12",
-                                                        md: "12",
-                                                      },
-                                                    },
-                                                    [
-                                                      _c("v-text-field", {
-                                                        attrs: {
-                                                          label:
-                                                            "Dirección sede logística",
-                                                          outlined: "",
-                                                        },
-                                                        model: {
-                                                          value:
-                                                            _vm.editedItem
-                                                              .logistic_address,
-                                                          callback: function (
-                                                            $$v
-                                                          ) {
-                                                            _vm.$set(
-                                                              _vm.editedItem,
-                                                              "logistic_address",
-                                                              $$v
-                                                            )
-                                                          },
-                                                          expression:
-                                                            "\n                                                        editedItem.logistic_address\n                                                    ",
-                                                        },
-                                                      }),
-                                                    ],
-                                                    1
-                                                  ),
-                                                  _vm._v(" "),
-                                                  _c(
-                                                    "v-col",
-                                                    {
-                                                      attrs: {
-                                                        cols: "12",
-                                                        sm: "6",
-                                                        md: "6",
-                                                      },
-                                                    },
-                                                    [
-                                                      _c("v-text-field", {
-                                                        attrs: {
-                                                          label: "CIF",
-                                                          outlined: "",
-                                                        },
-                                                        model: {
-                                                          value:
-                                                            _vm.editedItem.cif,
-                                                          callback: function (
-                                                            $$v
-                                                          ) {
-                                                            _vm.$set(
-                                                              _vm.editedItem,
-                                                              "cif",
-                                                              $$v
-                                                            )
-                                                          },
-                                                          expression:
-                                                            "editedItem.cif",
-                                                        },
-                                                      }),
-                                                    ],
-                                                    1
-                                                  ),
-                                                  _vm._v(" "),
-                                                  _c(
-                                                    "v-col",
-                                                    {
-                                                      attrs: {
-                                                        cols: "12",
-                                                        sm: "6",
-                                                        md: "6",
-                                                      },
-                                                    },
-                                                    [
-                                                      _c("v-select", {
-                                                        attrs: {
-                                                          items: _vm.province,
-                                                          "item-text": "name",
-                                                          "item-value": "id",
-                                                          label: "Provincia",
-                                                          required: "",
-                                                          "error-messages":
-                                                            _vm.provinceErrors,
-                                                          outlined: "",
-                                                        },
-                                                        on: {
-                                                          change: function (
-                                                            $event
-                                                          ) {
-                                                            return _vm.$v.editedItem.province.$touch()
-                                                          },
-                                                          blur: function (
-                                                            $event
-                                                          ) {
-                                                            return _vm.$v.editedItem.province.$touch()
-                                                          },
-                                                        },
-                                                        model: {
-                                                          value:
-                                                            _vm.editedItem
-                                                              .province,
-                                                          callback: function (
-                                                            $$v
-                                                          ) {
-                                                            _vm.$set(
-                                                              _vm.editedItem,
-                                                              "province",
-                                                              $$v
-                                                            )
-                                                          },
-                                                          expression:
-                                                            "\n                                                        editedItem.province\n                                                    ",
-                                                        },
-                                                      }),
-                                                    ],
-                                                    1
-                                                  ),
-                                                  _vm._v(" "),
-                                                  _c(
-                                                    "v-col",
-                                                    {
-                                                      attrs: {
-                                                        cols: "12",
-                                                        sm: "12",
-                                                        md: "12",
-                                                      },
-                                                    },
-                                                    [
-                                                      _c("v-file-input", {
-                                                        attrs: {
-                                                          color:
-                                                            "deep-purple accent-4",
-                                                          counter: "",
-                                                          label:
-                                                            "Cargar memoria de actividad",
-                                                          "prepend-icon": "",
-                                                          placeholder:
-                                                            "Cargar memoria de actividad",
-                                                          "append-icon":
-                                                            "mdi-cloud-upload-outline",
-                                                          outlined: "",
-                                                          "show-size": 1000,
-                                                        },
-                                                        scopedSlots: _vm._u([
-                                                          {
-                                                            key: "selection",
-                                                            fn: function (ref) {
-                                                              var index =
-                                                                ref.index
-                                                              var text =
-                                                                ref.text
-                                                              return [
-                                                                index < 2
-                                                                  ? _c(
-                                                                      "v-chip",
-                                                                      {
-                                                                        attrs: {
-                                                                          color:
-                                                                            "deep-purple accent-4",
-                                                                          dark: "",
-                                                                          label:
-                                                                            "",
-                                                                          small:
-                                                                            "",
-                                                                        },
-                                                                      },
-                                                                      [
-                                                                        _vm._v(
-                                                                          "\n                                                            " +
-                                                                            _vm._s(
-                                                                              text
-                                                                            ) +
-                                                                            "\n                                                        "
-                                                                        ),
-                                                                      ]
-                                                                    )
-                                                                  : index === 2
-                                                                  ? _c(
-                                                                      "span",
-                                                                      {
-                                                                        staticClass:
-                                                                          "text-overline grey--text text--darken-3 mx-2",
-                                                                      },
-                                                                      [
-                                                                        _vm._v(
-                                                                          "\n                                                            +\n                                                            " +
-                                                                            _vm._s(
-                                                                              _vm
-                                                                                .files
-                                                                                .length -
-                                                                                2
-                                                                            ) +
-                                                                            "\n                                                            Archivos(s)\n                                                        "
-                                                                        ),
-                                                                      ]
-                                                                    )
-                                                                  : _vm._e(),
-                                                              ]
-                                                            },
-                                                          },
-                                                        ]),
-                                                        model: {
-                                                          value:
-                                                            _vm.editedItem
-                                                              .activity_memory,
-                                                          callback: function (
-                                                            $$v
-                                                          ) {
-                                                            _vm.$set(
-                                                              _vm.editedItem,
-                                                              "activity_memory",
-                                                              $$v
-                                                            )
-                                                          },
-                                                          expression:
-                                                            "\n                                                        editedItem.activity_memory\n                                                    ",
-                                                        },
-                                                      }),
-                                                    ],
-                                                    1
-                                                  ),
-                                                ],
-                                                1
-                                              ),
-                                            ],
-                                            1
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "v-col",
-                                            {
-                                              staticClass: "pt-4",
                                               attrs: {
                                                 cols: "12",
                                                 sm: "12",
@@ -29680,25 +29241,764 @@ var render = function () {
                                               },
                                             },
                                             [
-                                              _c("v-select", {
+                                              _c("v-text-field", {
                                                 attrs: {
-                                                  items: _vm.activity,
-                                                  "item-text": "name",
-                                                  "item-value": "id",
-                                                  "return-object": "",
-                                                  attach: "",
-                                                  chips: "",
-                                                  label:
-                                                    "Selecciona la actividad de la empresa",
+                                                  label: "Nombre",
+                                                  counter: 255,
+                                                  required: "",
+                                                  "error-messages":
+                                                    _vm.nameErrors,
                                                   outlined: "",
-                                                  multiple: "",
+                                                },
+                                                on: {
+                                                  input: function ($event) {
+                                                    return _vm.$v.editedItem.name.$touch()
+                                                  },
+                                                  blur: function ($event) {
+                                                    return _vm.$v.editedItem.name.$touch()
+                                                  },
                                                 },
                                                 model: {
-                                                  value: _vm.value,
+                                                  value: _vm.editedItem.name,
                                                   callback: function ($$v) {
-                                                    _vm.value = $$v
+                                                    _vm.$set(
+                                                      _vm.editedItem,
+                                                      "name",
+                                                      $$v
+                                                    )
                                                   },
-                                                  expression: "value",
+                                                  expression: "editedItem.name",
+                                                },
+                                              }),
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-col",
+                                            {
+                                              attrs: {
+                                                cols: "12",
+                                                sm: "12",
+                                                md: "12",
+                                              },
+                                            },
+                                            [
+                                              _c("v-text-field", {
+                                                attrs: {
+                                                  label: "Correo electrónico",
+                                                  required: "",
+                                                  "error-messages":
+                                                    _vm.emailErrors,
+                                                  outlined: "",
+                                                },
+                                                on: {
+                                                  input: function ($event) {
+                                                    return _vm.$v.editedItem.email.$touch()
+                                                  },
+                                                  blur: function ($event) {
+                                                    return _vm.$v.editedItem.email.$touch()
+                                                  },
+                                                },
+                                                model: {
+                                                  value: _vm.editedItem.email,
+                                                  callback: function ($$v) {
+                                                    _vm.$set(
+                                                      _vm.editedItem,
+                                                      "email",
+                                                      $$v
+                                                    )
+                                                  },
+                                                  expression:
+                                                    "editedItem.email",
+                                                },
+                                              }),
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-col",
+                                            {
+                                              attrs: {
+                                                cols: "12",
+                                                sm: "6",
+                                                md: "6",
+                                              },
+                                            },
+                                            [
+                                              _c("v-text-field", {
+                                                attrs: {
+                                                  label: "Telefono",
+                                                  outlined: "",
+                                                },
+                                                model: {
+                                                  value:
+                                                    _vm.editedItem.telephone,
+                                                  callback: function ($$v) {
+                                                    _vm.$set(
+                                                      _vm.editedItem,
+                                                      "telephone",
+                                                      $$v
+                                                    )
+                                                  },
+                                                  expression:
+                                                    "editedItem.telephone",
+                                                },
+                                              }),
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-col",
+                                            {
+                                              attrs: {
+                                                cols: "12",
+                                                sm: "6",
+                                                md: "6",
+                                              },
+                                            },
+                                            [
+                                              _c("v-text-field", {
+                                                attrs: {
+                                                  label: "Telefono",
+                                                  outlined: "",
+                                                },
+                                                model: {
+                                                  value: _vm.editedItem.fax,
+                                                  callback: function ($$v) {
+                                                    _vm.$set(
+                                                      _vm.editedItem,
+                                                      "fax",
+                                                      $$v
+                                                    )
+                                                  },
+                                                  expression: "editedItem.fax",
+                                                },
+                                              }),
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-col",
+                                            {
+                                              attrs: {
+                                                cols: "12",
+                                                sm: "6",
+                                                md: "6",
+                                              },
+                                            },
+                                            [
+                                              _c("v-textarea", {
+                                                attrs: {
+                                                  outlined: "",
+                                                  label: "Observaciones",
+                                                  placeholder: "Observaciones",
+                                                  rows: "2",
+                                                },
+                                                model: {
+                                                  value: _vm.editedItem.address,
+                                                  callback: function ($$v) {
+                                                    _vm.$set(
+                                                      _vm.editedItem,
+                                                      "address",
+                                                      $$v
+                                                    )
+                                                  },
+                                                  expression:
+                                                    "editedItem.address",
+                                                },
+                                              }),
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-col",
+                                            {
+                                              attrs: {
+                                                cols: "12",
+                                                sm: "12",
+                                                md: "12",
+                                              },
+                                            },
+                                            [
+                                              _c("v-file-input", {
+                                                attrs: {
+                                                  color: "deep-purple accent-4",
+                                                  counter: "",
+                                                  label:
+                                                    "Cargar memoria de actividad",
+                                                  "prepend-icon": "",
+                                                  placeholder:
+                                                    "Cargar memoria de actividad",
+                                                  "append-icon":
+                                                    "mdi-cloud-upload-outline",
+                                                  outlined: "",
+                                                  "show-size": 1000,
+                                                },
+                                                scopedSlots: _vm._u([
+                                                  {
+                                                    key: "selection",
+                                                    fn: function (ref) {
+                                                      var index = ref.index
+                                                      var text = ref.text
+                                                      return [
+                                                        index < 2
+                                                          ? _c(
+                                                              "v-chip",
+                                                              {
+                                                                attrs: {
+                                                                  color:
+                                                                    "deep-purple accent-4",
+                                                                  dark: "",
+                                                                  label: "",
+                                                                  small: "",
+                                                                },
+                                                              },
+                                                              [
+                                                                _vm._v(
+                                                                  "\n                                                    " +
+                                                                    _vm._s(
+                                                                      text
+                                                                    ) +
+                                                                    "\n                                                "
+                                                                ),
+                                                              ]
+                                                            )
+                                                          : index === 2
+                                                          ? _c(
+                                                              "span",
+                                                              {
+                                                                staticClass:
+                                                                  "text-overline grey--text text--darken-3 mx-2",
+                                                              },
+                                                              [
+                                                                _vm._v(
+                                                                  "\n                                                    +\n                                                    " +
+                                                                    _vm._s(
+                                                                      _vm.files
+                                                                        .length -
+                                                                        2
+                                                                    ) +
+                                                                    "\n                                                    Archivos(s)\n                                                "
+                                                                ),
+                                                              ]
+                                                            )
+                                                          : _vm._e(),
+                                                      ]
+                                                    },
+                                                  },
+                                                ]),
+                                                model: {
+                                                  value: _vm.editedItem.img,
+                                                  callback: function ($$v) {
+                                                    _vm.$set(
+                                                      _vm.editedItem,
+                                                      "img",
+                                                      $$v
+                                                    )
+                                                  },
+                                                  expression: "editedItem.img",
+                                                },
+                                              }),
+                                            ],
+                                            1
+                                          ),
+                                        ],
+                                        1
+                                      ),
+                                    ],
+                                    1
+                                  ),
+                                ],
+                                1
+                              ),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-card-actions",
+                            [
+                              _c("v-spacer"),
+                              _vm._v(" "),
+                              _c(
+                                "v-btn",
+                                {
+                                  attrs: { color: "warning", small: "" },
+                                  on: { click: _vm.close },
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                            Cancel\n                        "
+                                  ),
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-btn",
+                                {
+                                  attrs: { color: "warning", small: "" },
+                                  on: { click: _vm.save },
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                            Guardar\n                        "
+                                  ),
+                                ]
+                              ),
+                            ],
+                            1
+                          ),
+                        ],
+                        1
+                      ),
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-dialog",
+                    {
+                      attrs: { "max-width": "300px" },
+                      model: {
+                        value: _vm.dialogDelete,
+                        callback: function ($$v) {
+                          _vm.dialogDelete = $$v
+                        },
+                        expression: "dialogDelete",
+                      },
+                    },
+                    [
+                      _c(
+                        "v-card",
+                        [
+                          _c("h3", { staticClass: "py-4 text-center" }, [
+                            _vm._v(
+                              "\n                        ¿Deseas Eliminar este registro?\n                    "
+                            ),
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "v-card-actions",
+                            [
+                              _c("v-spacer"),
+                              _vm._v(" "),
+                              _c(
+                                "v-btn",
+                                {
+                                  attrs: { color: "warning", small: "" },
+                                  on: { click: _vm.closeDelete },
+                                },
+                                [_vm._v("Cancel")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-btn",
+                                {
+                                  attrs: { color: "warning", small: "" },
+                                  on: { click: _vm.deleteItemConfirm },
+                                },
+                                [_vm._v("OK")]
+                              ),
+                              _vm._v(" "),
+                              _c("v-spacer"),
+                            ],
+                            1
+                          ),
+                        ],
+                        1
+                      ),
+                    ],
+                    1
+                  ),
+                ],
+                1
+              ),
+            ]
+          },
+          proxy: true,
+        },
+        {
+          key: "item.actions",
+          fn: function (ref) {
+            var item = ref.item
+            return [
+              _c(
+                "v-chip",
+                {
+                  attrs: { small: "", color: "warning", dark: "" },
+                  on: {
+                    click: function ($event) {
+                      return _vm.editItem(item)
+                    },
+                  },
+                },
+                [
+                  _c("v-icon", { staticClass: "mr-2", attrs: { small: "" } }, [
+                    _vm._v(" mdi-pencil "),
+                  ]),
+                  _vm._v("\n            Editar\n        "),
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-chip",
+                {
+                  attrs: { small: "", color: "warning", dark: "" },
+                  on: {
+                    click: function ($event) {
+                      return _vm.deleteItem(item)
+                    },
+                  },
+                },
+                [
+                  _c("v-icon", { staticClass: "mr-2", attrs: { small: "" } }, [
+                    _vm._v(" mdi-delete "),
+                  ]),
+                  _vm._v(" Eliminar\n        "),
+                ],
+                1
+              ),
+            ]
+          },
+        },
+        {
+          key: "no-data",
+          fn: function () {
+            return [
+              _c(
+                "v-btn",
+                {
+                  attrs: { color: "warning", small: "" },
+                  on: { click: _vm.initialize },
+                },
+                [_vm._v(" Reset ")]
+              ),
+            ]
+          },
+          proxy: true,
+        },
+      ],
+      null,
+      true
+    ),
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/company/ListCompanysComponent.vue?vue&type=template&id=45c3f31c&scoped=true&":
+/*!********************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/company/ListCompanysComponent.vue?vue&type=template&id=45c3f31c&scoped=true& ***!
+  \********************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("v-data-table", {
+    staticClass: "elevation-1",
+    attrs: { headers: _vm.headers, items: _vm.companys, "sort-by": "id" },
+    scopedSlots: _vm._u(
+      [
+        {
+          key: "top",
+          fn: function () {
+            return [
+              _c("v-toolbar", { attrs: { flat: "" } }, [
+                _c("h2", [_vm._v("Compañias Registradas")]),
+              ]),
+              _vm._v(" "),
+              _c(
+                "v-toolbar",
+                { attrs: { flat: "" } },
+                [
+                  _c(
+                    "v-dialog",
+                    {
+                      attrs: { "max-width": "400px" },
+                      scopedSlots: _vm._u([
+                        {
+                          key: "activator",
+                          fn: function (ref) {
+                            var on = ref.on
+                            var attrs = ref.attrs
+                            return [
+                              _c(
+                                "v-btn",
+                                _vm._g(
+                                  _vm._b(
+                                    {
+                                      staticClass: "mb-2",
+                                      staticStyle: {
+                                        "border-radius": "30px",
+                                        "text-transform": "none",
+                                      },
+                                      attrs: {
+                                        color: "orange",
+                                        dark: "",
+                                        small: "",
+                                        rounded: "",
+                                      },
+                                    },
+                                    "v-btn",
+                                    attrs,
+                                    false
+                                  ),
+                                  on
+                                ),
+                                [
+                                  _vm._v(
+                                    "\n                        Registrar Compañia\n                    "
+                                  ),
+                                ]
+                              ),
+                            ]
+                          },
+                        },
+                      ]),
+                      model: {
+                        value: _vm.dialog,
+                        callback: function ($$v) {
+                          _vm.dialog = $$v
+                        },
+                        expression: "dialog",
+                      },
+                    },
+                    [
+                      _vm._v(" "),
+                      _c(
+                        "v-card",
+                        [
+                          _c(
+                            "v-toolbar",
+                            { attrs: { color: "orange", dark: "" } },
+                            [
+                              _vm._v(
+                                _vm._s(_vm.formTitle) +
+                                  "\n                        "
+                              ),
+                              _c("v-spacer"),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-card-text",
+                            { staticClass: "pt-8" },
+                            [
+                              _c(
+                                "v-form",
+                                {
+                                  ref: "form",
+                                  attrs: { method: "POST" },
+                                  on: {
+                                    submit: function ($event) {
+                                      $event.preventDefault()
+                                      return _vm.save()
+                                    },
+                                  },
+                                },
+                                [
+                                  _c(
+                                    "v-container",
+                                    [
+                                      _c(
+                                        "v-row",
+                                        [
+                                          _c(
+                                            "v-col",
+                                            {
+                                              attrs: {
+                                                cols: "12",
+                                                sm: "12",
+                                                md: "12",
+                                              },
+                                            },
+                                            [
+                                              _c("h6", [
+                                                _vm._v(
+                                                  "INFORMACIÓN DE LA COMPAÑIA"
+                                                ),
+                                              ]),
+                                              _vm._v(" "),
+                                              _c("br"),
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-col",
+                                            {
+                                              attrs: {
+                                                cols: "12",
+                                                sm: "12",
+                                                md: "12",
+                                              },
+                                            },
+                                            [
+                                              _c("v-text-field", {
+                                                attrs: {
+                                                  label: "Nombre",
+                                                  counter: 255,
+                                                  required: "",
+                                                  "error-messages":
+                                                    _vm.company_nameErrors,
+                                                  outlined: "",
+                                                },
+                                                on: {
+                                                  input: function ($event) {
+                                                    return _vm.$v.editedItem.company_name.$touch()
+                                                  },
+                                                  blur: function ($event) {
+                                                    return _vm.$v.editedItem.company_name.$touch()
+                                                  },
+                                                },
+                                                model: {
+                                                  value:
+                                                    _vm.editedItem.company_name,
+                                                  callback: function ($$v) {
+                                                    _vm.$set(
+                                                      _vm.editedItem,
+                                                      "company_name",
+                                                      $$v
+                                                    )
+                                                  },
+                                                  expression:
+                                                    "\n                                                editedItem.company_name\n                                            ",
+                                                },
+                                              }),
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-col",
+                                            {
+                                              attrs: {
+                                                cols: "12",
+                                                sm: "12",
+                                                md: "12",
+                                              },
+                                            },
+                                            [
+                                              _c("v-text-field", {
+                                                attrs: {
+                                                  label: "Correo electrónico",
+                                                  required: "",
+                                                  "error-messages":
+                                                    _vm.emailErrors,
+                                                  outlined: "",
+                                                },
+                                                on: {
+                                                  input: function ($event) {
+                                                    return _vm.$v.editedItem.email.$touch()
+                                                  },
+                                                  blur: function ($event) {
+                                                    return _vm.$v.editedItem.email.$touch()
+                                                  },
+                                                },
+                                                model: {
+                                                  value: _vm.editedItem.email,
+                                                  callback: function ($$v) {
+                                                    _vm.$set(
+                                                      _vm.editedItem,
+                                                      "email",
+                                                      $$v
+                                                    )
+                                                  },
+                                                  expression:
+                                                    "editedItem.email",
+                                                },
+                                              }),
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-col",
+                                            {
+                                              attrs: {
+                                                cols: "12",
+                                                sm: "12",
+                                                md: "12",
+                                              },
+                                            },
+                                            [
+                                              _c("v-text-field", {
+                                                attrs: {
+                                                  label: "Contraseña",
+                                                  required: "",
+                                                  "error-messages":
+                                                    _vm.passwordErrors,
+                                                  outlined: "",
+                                                },
+                                                on: {
+                                                  input: function ($event) {
+                                                    return _vm.$v.editedItem.password.$touch()
+                                                  },
+                                                  blur: function ($event) {
+                                                    return _vm.$v.editedItem.password.$touch()
+                                                  },
+                                                },
+                                                model: {
+                                                  value:
+                                                    _vm.editedItem.password,
+                                                  callback: function ($$v) {
+                                                    _vm.$set(
+                                                      _vm.editedItem,
+                                                      "password",
+                                                      $$v
+                                                    )
+                                                  },
+                                                  expression:
+                                                    "editedItem.password",
+                                                },
+                                              }),
+                                            ],
+                                            1
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-col",
+                                            {
+                                              attrs: {
+                                                cols: "12",
+                                                sm: "6",
+                                                md: "6",
+                                              },
+                                            },
+                                            [
+                                              _c("v-text-field", {
+                                                attrs: {
+                                                  label: "Telefono",
+                                                  outlined: "",
+                                                },
+                                                model: {
+                                                  value: _vm.editedItem.phone,
+                                                  callback: function ($$v) {
+                                                    _vm.$set(
+                                                      _vm.editedItem,
+                                                      "phone",
+                                                      $$v
+                                                    )
+                                                  },
+                                                  expression:
+                                                    "editedItem.phone",
                                                 },
                                               }),
                                             ],
@@ -94773,7 +95073,8 @@ var map = {
 	"./components/auth/LoginFormComponent.vue": "./resources/js/components/auth/LoginFormComponent.vue",
 	"./components/auth/LogoutButtonComponent.vue": "./resources/js/components/auth/LogoutButtonComponent.vue",
 	"./components/auth/RegisterButtonComponent.vue": "./resources/js/components/auth/RegisterButtonComponent.vue",
-	"./components/clients/ListClientsComponent.vue": "./resources/js/components/clients/ListClientsComponent.vue"
+	"./components/clients/ListClientsComponent.vue": "./resources/js/components/clients/ListClientsComponent.vue",
+	"./components/company/ListCompanysComponent.vue": "./resources/js/components/company/ListCompanysComponent.vue"
 };
 
 
@@ -94836,6 +95137,29 @@ __webpack_require__.r(__webpack_exports__);
   },
   "delete": function _delete(data) {
     return axios.post("/deleteClient", data);
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/api/company.js":
+/*!*************************************!*\
+  !*** ./resources/js/api/company.js ***!
+  \*************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  register: function register(data) {
+    return axios.post("/newCompany", data);
+  },
+  update: function update(data) {
+    return axios.post("/updateCompany", data);
+  },
+  "delete": function _delete(data) {
+    return axios.post("/deleteCompany", data);
   }
 });
 
@@ -95454,6 +95778,93 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/company/ListCompanysComponent.vue":
+/*!*******************************************************************!*\
+  !*** ./resources/js/components/company/ListCompanysComponent.vue ***!
+  \*******************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ListCompanysComponent_vue_vue_type_template_id_45c3f31c_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ListCompanysComponent.vue?vue&type=template&id=45c3f31c&scoped=true& */ "./resources/js/components/company/ListCompanysComponent.vue?vue&type=template&id=45c3f31c&scoped=true&");
+/* harmony import */ var _ListCompanysComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ListCompanysComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/company/ListCompanysComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _ListCompanysComponent_vue_vue_type_style_index_0_id_45c3f31c_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ListCompanysComponent.vue?vue&type=style&index=0&id=45c3f31c&scoped=true&lang=css& */ "./resources/js/components/company/ListCompanysComponent.vue?vue&type=style&index=0&id=45c3f31c&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _ListCompanysComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ListCompanysComponent_vue_vue_type_template_id_45c3f31c_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ListCompanysComponent_vue_vue_type_template_id_45c3f31c_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "45c3f31c",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/company/ListCompanysComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/company/ListCompanysComponent.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************!*\
+  !*** ./resources/js/components/company/ListCompanysComponent.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ListCompanysComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./ListCompanysComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/company/ListCompanysComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ListCompanysComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/company/ListCompanysComponent.vue?vue&type=style&index=0&id=45c3f31c&scoped=true&lang=css&":
+/*!****************************************************************************************************************************!*\
+  !*** ./resources/js/components/company/ListCompanysComponent.vue?vue&type=style&index=0&id=45c3f31c&scoped=true&lang=css& ***!
+  \****************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_ListCompanysComponent_vue_vue_type_style_index_0_id_45c3f31c_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./ListCompanysComponent.vue?vue&type=style&index=0&id=45c3f31c&scoped=true&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/company/ListCompanysComponent.vue?vue&type=style&index=0&id=45c3f31c&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_ListCompanysComponent_vue_vue_type_style_index_0_id_45c3f31c_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_ListCompanysComponent_vue_vue_type_style_index_0_id_45c3f31c_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_ListCompanysComponent_vue_vue_type_style_index_0_id_45c3f31c_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_ListCompanysComponent_vue_vue_type_style_index_0_id_45c3f31c_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+
+
+/***/ }),
+
+/***/ "./resources/js/components/company/ListCompanysComponent.vue?vue&type=template&id=45c3f31c&scoped=true&":
+/*!**************************************************************************************************************!*\
+  !*** ./resources/js/components/company/ListCompanysComponent.vue?vue&type=template&id=45c3f31c&scoped=true& ***!
+  \**************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ListCompanysComponent_vue_vue_type_template_id_45c3f31c_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./ListCompanysComponent.vue?vue&type=template&id=45c3f31c&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/company/ListCompanysComponent.vue?vue&type=template&id=45c3f31c&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ListCompanysComponent_vue_vue_type_template_id_45c3f31c_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ListCompanysComponent_vue_vue_type_template_id_45c3f31c_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/modules/auth.js":
 /*!**************************************!*\
   !*** ./resources/js/modules/auth.js ***!
@@ -95665,6 +96076,100 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 /***/ }),
 
+/***/ "./resources/js/modules/company.js":
+/*!*****************************************!*\
+  !*** ./resources/js/modules/company.js ***!
+  \*****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _api_company_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../api/company.js */ "./resources/js/api/company.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  state: {
+    companys: []
+  }
+  /* END OF STATE */
+  ,
+  getters: {}
+  /* END OF GETTERS */
+  ,
+  mutations: {
+    SET_COMPANYSDATA: function SET_COMPANYSDATA(state, companys) {
+      state.companys = companys;
+    }
+  }
+  /* END OF MUTATIONS */
+  ,
+  actions: {
+    getCompanys: function getCompanys(_ref) {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        var commit;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                commit = _ref.commit;
+                _context.next = 3;
+                return axios.get("/getCompanylist").then(function (response) {
+                  commit("SET_COMPANYSDATA", response.data);
+                });
+
+              case 3:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }))();
+    },
+    registerCompany: function registerCompany(_ref2, data) {
+      var commit = _ref2.commit;
+      return new Promise(function (resolve, reject) {
+        _api_company_js__WEBPACK_IMPORTED_MODULE_1__["default"].register(data).then(function (res) {
+          resolve(res);
+        })["catch"](function (error) {
+          reject(error);
+        });
+      });
+    },
+    updateCompany: function updateCompany(_ref3, data) {
+      var commit = _ref3.commit;
+      return new Promise(function (resolve, reject) {
+        _api_company_js__WEBPACK_IMPORTED_MODULE_1__["default"].update(data).then(function (res) {
+          resolve(res);
+        })["catch"](function (error) {
+          reject(error);
+        });
+      });
+    },
+    deleteCompany: function deleteCompany(_ref4, data) {
+      var commit = _ref4.commit;
+      return new Promise(function (resolve, reject) {
+        _api_company_js__WEBPACK_IMPORTED_MODULE_1__["default"]["delete"](data).then(function (res) {
+          resolve(res);
+        })["catch"](function (error) {
+          reject(error);
+        });
+      });
+    }
+  }
+  /* END OF ACTIONS */
+
+});
+
+/***/ }),
+
 /***/ "./resources/js/router.js":
 /*!********************************!*\
   !*** ./resources/js/router.js ***!
@@ -95679,6 +96184,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
 /* harmony import */ var _store_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./store.js */ "./resources/js/store.js");
 /* harmony import */ var _components_clients_ListClientsComponent_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/clients/ListClientsComponent.vue */ "./resources/js/components/clients/ListClientsComponent.vue");
+/* harmony import */ var _components_company_ListCompanysComponent_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/company/ListCompanysComponent.vue */ "./resources/js/components/company/ListCompanysComponent.vue");
+
 
 
 
@@ -95687,6 +96194,10 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODU
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   // mode: 'history',
   routes: [{
+    path: "/listcompanys",
+    name: "Listar Compañias",
+    component: _components_company_ListCompanysComponent_vue__WEBPACK_IMPORTED_MODULE_5__["default"]
+  }, {
     path: "/listclients",
     name: "Listar Clientes",
     component: _components_clients_ListClientsComponent_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
@@ -95723,9 +96234,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _modules_auth_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/auth.js */ "./resources/js/modules/auth.js");
 /* harmony import */ var _modules_client_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/client.js */ "./resources/js/modules/client.js");
+/* harmony import */ var _modules_company_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/company.js */ "./resources/js/modules/company.js");
 
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
@@ -95751,7 +96264,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
   ,
   modules: {
     auth: _modules_auth_js__WEBPACK_IMPORTED_MODULE_2__["default"],
-    client: _modules_client_js__WEBPACK_IMPORTED_MODULE_3__["default"]
+    client: _modules_client_js__WEBPACK_IMPORTED_MODULE_3__["default"],
+    company: _modules_company_js__WEBPACK_IMPORTED_MODULE_4__["default"]
   }
 }));
 

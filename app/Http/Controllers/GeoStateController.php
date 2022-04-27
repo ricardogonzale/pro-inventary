@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\GeoProvince;
+use App\GeoState;
 use Illuminate\Http\Request;
 
-class GeoProvinceController extends Controller
+class GeoStateController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,27 +41,26 @@ class GeoProvinceController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\GeoProvince  $geoProvince
+     * @param  \App\GeoState  $geoState
      * @return \Illuminate\Http\Response
      */
-    public function show(GeoProvince $geoProvince)
+    public function show(GeoState $geoState)
     {
         //
     }
 
     public function list()
     {
-        $model = GeoProvince::all();
+        $model = GeoState::all();
         return response()->json($model);
     }
-
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\GeoProvince  $geoProvince
+     * @param  \App\GeoState  $geoState
      * @return \Illuminate\Http\Response
      */
-    public function edit(GeoProvince $geoProvince)
+    public function edit(GeoState $geoState)
     {
         //
     }
@@ -70,10 +69,10 @@ class GeoProvinceController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\GeoProvince  $geoProvince
+     * @param  \App\GeoState  $geoState
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, GeoProvince $geoProvince)
+    public function update(Request $request, GeoState $geoState)
     {
         //
     }
@@ -81,10 +80,10 @@ class GeoProvinceController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\GeoProvince  $geoProvince
+     * @param  \App\GeoState  $geoState
      * @return \Illuminate\Http\Response
      */
-    public function destroy(GeoProvince $geoProvince)
+    public function destroy(GeoState $geoState)
     {
         //
     }
