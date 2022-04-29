@@ -46,7 +46,7 @@
                                         <v-col cols="12" sm="12" md="12">
                                             <v-text-field
                                                 v-model="editedItem.name"
-                                                label="Nombre"
+                                                label="Name"
                                                 :counter="255"
                                                 required
                                                 @input="
@@ -62,7 +62,7 @@
                                         <v-col cols="12" sm="12" md="12">
                                             <v-text-field
                                                 v-model="editedItem.email"
-                                                label="Correo electrónico"
+                                                label="Email"
                                                 required
                                                 @input="
                                                     $v.editedItem.email.$touch()
@@ -77,14 +77,14 @@
                                         <v-col cols="12" sm="6" md="6">
                                             <v-text-field
                                                 v-model="editedItem.telephone"
-                                                label="Telefono"
+                                                label="Telephone"
                                                 outlined
                                             ></v-text-field>
                                         </v-col>
                                         <v-col cols="12" sm="6" md="6">
                                             <v-text-field
                                                 v-model="editedItem.fax"
-                                                label="Telefono"
+                                                label="Fax"
                                                 outlined
                                             ></v-text-field>
                                         </v-col>
@@ -92,8 +92,8 @@
                                             <v-textarea
                                                 outlined
                                                 v-model="editedItem.address"
-                                                label="Observaciones"
-                                                placeholder="Observaciones"
+                                                label="Observations"
+                                                placeholder="Observations"
                                                 rows="2"
                                             ></v-textarea>
                                         </v-col>
@@ -102,9 +102,9 @@
                                                 v-model="editedItem.img"
                                                 color="deep-purple accent-4"
                                                 counter
-                                                label="Cargar memoria de actividad"
+                                                label="Picture"
                                                 prepend-icon=""
-                                                placeholder="Cargar memoria de actividad"
+                                                placeholder="Load Picture"
                                                 append-icon="mdi-cloud-upload-outline"
                                                 outlined
                                                 :show-size="1000"
@@ -131,7 +131,7 @@
                                                     >
                                                         +
                                                         {{ files.length - 2 }}
-                                                        Archivos(s)
+                                                        File(s)
                                                     </span>
                                                 </template>
                                             </v-file-input>
@@ -147,7 +147,7 @@
                                 Cancel
                             </v-btn>
                             <v-btn color="warning" small @click="save">
-                                Guardar
+                                Save
                             </v-btn>
                         </v-card-actions>
                     </v-card>
@@ -155,7 +155,7 @@
                 <v-dialog v-model="dialogDelete" max-width="300px">
                     <v-card>
                         <h3 class="py-4 text-center">
-                            ¿Deseas Eliminar este registro?
+                            ¿Do you want to delete this record?
                         </h3>
                         <v-card-actions>
                             <v-spacer></v-spacer>
@@ -177,10 +177,10 @@
         <template v-slot:[`item.actions`]="{ item }">
             <v-chip small color="warning" dark @click="editItem(item)">
                 <v-icon small class="mr-2"> mdi-pencil </v-icon>
-                Editar
+                Edit
             </v-chip>
             <v-chip small color="warning" dark @click="deleteItem(item)">
-                <v-icon small class="mr-2"> mdi-delete </v-icon> Eliminar
+                <v-icon small class="mr-2"> mdi-delete </v-icon> Delete
             </v-chip>
         </template>
         <template v-slot:no-data>
@@ -269,14 +269,16 @@ export default {
             !this.$v.editedItem.email.email &&
                 errors.push("The email format is invalid.");
             !this.$v.editedItem.email.required &&
-                errors.push("E-mail is required");
+                errors.push("E-mail is required.");
             return errors;
         },
         passwordErrors() {
             const errors = [];
             if (!this.$v.editedItem.password.$dirty) return errors;
             !this.$v.editedItem.password.minLength &&
-                errors.push("The password must not contain less than 8 digits");
+                errors.push(
+                    "The password must not contain less than 8 digits."
+                );
             !this.$v.editedItem.password.required &&
                 errors.push("This field is required.");
             return errors;
@@ -285,7 +287,7 @@ export default {
             const errors = [];
             if (!this.$v.editedItem.state.$dirty) return errors;
             !this.$v.editedItem.state.required &&
-                errors.push("Este campo es obligatorio");
+                errors.push("Este campo es obligatorio.");
             return errors;
         },
     },

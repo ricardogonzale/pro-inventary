@@ -258,21 +258,26 @@ export default {
                     type: 0,
                     items: [
                         {
-                            title: "Compañias",
+                            title: "Companies",
                             icon: "mdi-account-box-multiple",
                             link: "/listcompanys",
                         },
                     ],
                 },
                 {
-                    text: "Clientes",
+                    text: "Clients",
                     icon: "mdi-book-account",
                     type: 1,
                     items: [
                         {
-                            title: "Clientes",
+                            title: "Clients",
                             icon: "mdi-account-box-multiple",
                             link: "/listclients",
+                        },
+                        {
+                            title: "Equipments",
+                            icon: "mdi-hammer-wrench",
+                            link: "/listequipments",
                         },
                         {
                             title: "Proyectos",

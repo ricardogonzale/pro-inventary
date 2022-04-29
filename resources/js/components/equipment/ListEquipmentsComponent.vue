@@ -1,13 +1,13 @@
 <template>
     <v-data-table
         :headers="headers"
-        :items="companys"
+        :items="equipments"
         sort-by="id"
         class="elevation-1"
     >
         <template v-slot:top>
             <v-toolbar flat>
-                <h2>Companies</h2>
+                <h2>Equipment</h2>
             </v-toolbar>
             <v-toolbar flat>
                 <v-dialog v-model="dialog" max-width="400px">
@@ -22,7 +22,7 @@
                             v-on="on"
                             style="border-radius: 30px; text-transform: none"
                         >
-                            Create Company
+                            Create Equipment
                         </v-btn>
                     </template>
                     <v-card>
@@ -40,63 +40,70 @@
                                 <v-container>
                                     <v-row>
                                         <v-col cols="12" sm="12" md="12">
-                                            <h6>COMPANY DATA</h6>
+                                            <h6>EQUIPMENT INFORMATION</h6>
                                             <br />
                                         </v-col>
                                         <v-col cols="12" sm="12" md="12">
-                                            <v-text-field
-                                                v-model="
-                                                    editedItem.company_name
+                                            <v-select
+                                                :items="categories"
+                                                item-text="name"
+                                                item-value="id"
+                                                label="Category"
+                                                v-model="editedItem.categories"
+                                                required
+                                                @change="
+                                                    $v.editedItem.categories.$touch()
                                                 "
-                                                label="Name"
+                                                @blur="
+                                                    $v.editedItem.categories.$touch()
+                                                "
+                                                :error-messages="
+                                                    categoriesErrors
+                                                "
+                                                outlined
+                                            ></v-select>
+                                        </v-col>
+                                        <v-col cols="12" sm="12" md="12">
+                                            <v-text-field
+                                                v-model="editedItem.name"
+                                                label="Nombre"
                                                 :counter="255"
                                                 required
                                                 @input="
-                                                    $v.editedItem.company_name.$touch()
+                                                    $v.editedItem.name.$touch()
                                                 "
                                                 @blur="
-                                                    $v.editedItem.company_name.$touch()
+                                                    $v.editedItem.name.$touch()
                                                 "
-                                                :error-messages="
-                                                    company_nameErrors
-                                                "
+                                                :error-messages="nameErrors"
                                                 outlined
                                             ></v-text-field>
                                         </v-col>
                                         <v-col cols="12" sm="12" md="12">
                                             <v-text-field
-                                                v-model="editedItem.email"
-                                                label="Email"
-                                                required
-                                                @input="
-                                                    $v.editedItem.email.$touch()
-                                                "
-                                                @blur="
-                                                    $v.editedItem.email.$touch()
-                                                "
-                                                :error-messages="emailErrors"
+                                                v-model="editedItem.barCode"
+                                                label="Bar Code"
                                                 outlined
                                             ></v-text-field>
                                         </v-col>
-                                        <v-col cols="12" sm="12" md="12">
+                                        <v-col cols="12" sm="12" md="4">
                                             <v-text-field
-                                                v-model="editedItem.password"
-                                                label="Password"
-                                                required
-                                                @input="
-                                                    $v.editedItem.password.$touch()
-                                                "
-                                                @blur="
-                                                    $v.editedItem.password.$touch()
-                                                "
-                                                :error-messages="passwordErrors"
+                                                v-model="editedItem.stock"
+                                                label="Stock"
                                                 outlined
                                             ></v-text-field>
                                         </v-col>
-                                        <v-col cols="12" sm="6" md="6">
+                                        <v-col cols="12" sm="12" md="4">
                                             <v-text-field
-                                                v-model="editedItem.phone"
-                                                label="Telephone"
+                                                v-model="editedItem.stock_min"
+                                                label="Stock Min"
+                                                outlined
+                                            ></v-text-field>
+                                        </v-col>
+                                        <v-col cols="12" sm="12" md="4">
+                                            <v-text-field
+                                                v-model="editedItem.price"
+                                                label="Price"
                                                 outlined
                                             ></v-text-field>
                                         </v-col>
@@ -111,7 +118,7 @@
                                 Cancel
                             </v-btn>
                             <v-btn color="warning" small @click="save">
-                                Save
+                                Guardar
                             </v-btn>
                         </v-card-actions>
                     </v-card>
@@ -119,7 +126,7 @@
                 <v-dialog v-model="dialogDelete" max-width="300px">
                     <v-card>
                         <h3 class="py-4 text-center">
-                            ¿Do you want to delete this record?
+                            ¿Deseas Eliminar este registro?
                         </h3>
                         <v-card-actions>
                             <v-spacer></v-spacer>
@@ -141,10 +148,10 @@
         <template v-slot:[`item.actions`]="{ item }">
             <v-chip small color="warning" dark @click="editItem(item)">
                 <v-icon small class="mr-2"> mdi-pencil </v-icon>
-                Edit
+                Editar
             </v-chip>
             <v-chip small color="warning" dark @click="deleteItem(item)">
-                <v-icon small class="mr-2"> mdi-delete </v-icon> Delete
+                <v-icon small class="mr-2"> mdi-delete </v-icon> Eliminar
             </v-chip>
         </template>
         <template v-slot:no-data>
@@ -153,6 +160,7 @@
     </v-data-table>
 </template>
 <script>
+import axios from "axios";
 import { validationMixin } from "vuelidate";
 import {
     required,
@@ -165,61 +173,67 @@ export default {
     mixins: [validationMixin],
     validations: {
         editedItem: {
-            company_name: { required, maxLength: maxLength(255) },
+            name: { required, maxLength: maxLength(255) },
             email: { required, email },
-            password: { required, minLength: minLength(8) },
+            telephone: { required },
+            categories: { required },
         },
     },
     data: () => ({
         dialog: false,
         dialogDelete: false,
         files: [],
-        state: [],
+        categories: [],
         value: [],
         headers: [
-            { text: "Id", value: "id_company" },
+            { text: "Id", value: "id" },
             {
                 text: "Name",
                 align: "start",
-                value: "company_name",
+                value: "name",
             },
-            { text: "Email", value: "email" },
-            { text: "Telephone", value: "phone" },
-            { text: "Active", value: "status" },
-            { text: "Acciones", value: "actions", sortable: false },
+            { text: "Barcode", value: "barCode" },
+            { text: "Stock", value: "stock" },
+            { text: "Min Stock", value: "stock_min" },
+            { text: "Price", value: "price" },
+            { text: "Actions", value: "actions", sortable: false },
         ],
         editedIndex: -1,
         editedItem: {
             id: null,
-            company_name: "",
-            email: "",
-            password: "",
-            phone: "",
+            categories: "",
+            name: "",
+            barCode: "",
+            stock: "",
+            stock_min: "",
+            price: "",
         },
         defaultItem: {
             id: null,
-            company_name: "",
-            email: "",
-            password: "",
-            phone: "",
+            categories: null,
+            name: "",
+            barCode: "",
+            stock: "",
+            stock_min: "",
+            price: "",
         },
     }),
 
     computed: {
-        companys: {
+        equipments: {
             get() {
-                return this.$store.state.company.companys;
+                return this.$store.state.equipment.equipments;
             },
         },
         formTitle() {
-            return this.editedIndex === -1 ? "New Company" : "Edit Company";
+            return this.editedIndex === -1 ? "New Equipment" : "Edit Equipment";
         },
-        company_nameErrors() {
+        nameErrors() {
             const errors = [];
-            if (!this.$v.editedItem.company_name.$dirty) return errors;
-            !this.$v.editedItem.company_name.required &&
+            if (!this.$v.editedItem.name.$dirty) return errors;
+            !this.$v.editedItem.name.required &&
                 errors.push("This field is required.");
-            !this.$v.editedItem.company_name.maxLength &&
+            !this.$v.editedItem.name.maxLength &&
                 errors.push("The field must not contain more than 255 digits.");
             return errors;
         },
@@ -229,18 +243,23 @@ export default {
             !this.$v.editedItem.email.email &&
                 errors.push("The email format is invalid.");
             !this.$v.editedItem.email.required &&
-                errors.push("E-mail is required.");
+                errors.push("E-mail is required");
             return errors;
         },
         passwordErrors() {
             const errors = [];
             if (!this.$v.editedItem.password.$dirty) return errors;
             !this.$v.editedItem.password.minLength &&
-                errors.push(
-                    "The password must not contain less than 8 digits."
-                );
+                errors.push("The password must not contain less than 8 digits");
             !this.$v.editedItem.password.required &&
                 errors.push("This field is required.");
+            return errors;
+        },
+        stateErrors() {
+            const errors = [];
+            if (!this.$v.editedItem.state.$dirty) return errors;
+            !this.$v.editedItem.state.required &&
+                errors.push("Este campo es obligatorio");
             return errors;
         },
     },
@@ -260,28 +279,28 @@ export default {
 
     methods: {
         initialize() {
-            this.companys = [];
+            this.equipments = [];
         },
 
         editItem(item) {
-            this.editedIndex = this.companys.indexOf(item);
+            this.editedIndex = this.equipments.indexOf(item);
             this.editedItem = Object.assign({}, item);
             this.dialog = true;
         },
 
         deleteItem(item) {
             console.log(item);
-            this.editedIndex = this.companys.indexOf(item);
+            this.editedIndex = this.equipments.indexOf(item);
             this.editedItem = Object.assign({}, item);
             this.dialogDelete = true;
         },
 
         deleteItemConfirm() {
-            this.companys.splice(this.editedIndex, 1);
+            this.equipments.splice(this.editedIndex, 1);
             this.$store
-                .dispatch("deleteCompany", this.editedItem)
+                .dispatch("delete", this.editedItem)
                 .then((res) => {
-                    this.$store.dispatch("getCompanys");
+                    this.$store.dispatch("getEquipments");
                 })
                 .catch((error) => {
                     console.log(error.response.data);
@@ -306,6 +325,13 @@ export default {
                 this.editedIndex = -1;
             });
         },
+        getState: function () {
+            axios.get("/getState").then(
+                function (response) {
+                    this.state = response.data;
+                }.bind(this)
+            );
+        },
         save() {
             this.$v.$touch();
             if (this.$v.$invalid) {
@@ -316,12 +342,13 @@ export default {
             console.log(this.editedItem);
             rawData = JSON.stringify(rawData);
             formData.append("data", rawData);
+            formData.append("imagen[img]", this.editedItem.img);
 
             if (this.editedIndex > -1) {
                 this.$store
-                    .dispatch("updateCompany", formData)
+                    .dispatch("update", formData)
                     .then((res) => {
-                        this.$store.dispatch("getCompanys");
+                        this.$store.dispatch("getEquipments");
                     })
                     .catch((error) => {
                         console.log(error.response.data);
@@ -329,9 +356,9 @@ export default {
                     });
             } else {
                 this.$store
-                    .dispatch("registerCompany", formData)
+                    .dispatch("register", formData)
                     .then((res) => {
-                        this.$store.dispatch("getCompanys");
+                        this.$store.dispatch("getEquipments");
                     })
                     .catch((error) => {
                         console.log(error.response.data);
@@ -342,7 +369,8 @@ export default {
         },
     },
     mounted() {
-        this.$store.dispatch("getCompanys");
+        this.$store.dispatch("getEquipments");
+        this.getState();
     },
 };
 </script>

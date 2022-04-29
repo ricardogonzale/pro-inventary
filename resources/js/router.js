@@ -4,6 +4,7 @@ import store from "./store.js";
 
 import ListClients from "./components/clients/ListClientsComponent.vue";
 import ListCompanys from "./components/company/ListCompanysComponent.vue";
+import ListEquipment from "./components/equipment/ListEquipmentsComponent.vue";
 
 Vue.use(VueRouter);
 
@@ -12,13 +13,18 @@ const router = new VueRouter({
     routes: [
         {
             path: "/listcompanys",
-            name: "Listar Compañias",
+            name: "Listar Companies",
             component: ListCompanys,
         },
         {
             path: "/listclients",
-            name: "Listar Clientes",
+            name: "Listar Clients",
             component: ListClients,
+        },
+        {
+            path: "/listequipments",
+            name: "Listar Equipments",
+            component: ListEquipment,
         },
     ],
 });

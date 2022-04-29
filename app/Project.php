@@ -18,6 +18,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $mun_project
  * @property int $id_branch
  * @property int $id_company
+ * @property string $created_at
+ * @property string $updated_at
  * @property int $division_name
  * @property string $woork_week
  * @property string $job_type
@@ -54,5 +56,5 @@ class Project extends Model
     /**
      * @var array
      */
-    protected $fillable = ['name', 'date_start', 'date_end', 'id_city', 'id_state', 'Street', 'zip_code', 'team_leader', 'id_client', 'mun_project', 'id_branch', 'id_company', 'division_name', 'woork_week', 'job_type', 'Crew', 'work_shift', 'note', 'status_prj', 'status_calend', 'period', 'category', 'recur_info', 'event_color', 'creator', 'reminder', 'recurrence', 'description'];
+    protected $fillable = ['name', 'date_start', 'date_end', 'id_city', 'id_state', 'Street', 'zip_code', 'team_leader', 'id_client', 'mun_project', 'id_branch', 'id_company', 'created_at', 'updated_at', 'division_name', 'woork_week', 'job_type', 'Crew', 'work_shift', 'note', 'status_prj', 'status_calend', 'period', 'category', 'recur_info', 'event_color', 'creator', 'reminder', 'recurrence', 'description'];
 }

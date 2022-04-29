@@ -36,3 +36,6 @@ Route::get('getCompanyshow/{id}', 'CompanyController@show')->name('company.show'
 Route::post('/newCompany', 'CompanyController@create')->name('newCompany');
 Route::post('/updateCompany', 'CompanyController@update')->name('updateCompany');
 Route::post('/deleteCompany', 'CompanyController@destroy')->name('deleteCompany');
+
+Route::get('getEquipmentlist', 'EquipmentController@list')->name('equipment.list');
+Route::get('getEquipmentshow/{id}', 'EquipmentController@show')->name('equipment.show');
