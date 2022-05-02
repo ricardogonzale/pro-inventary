@@ -6,8 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property int $id_category
- * @property string $nombre
+ * @property string $name
  * @property string $type
+ * @property int $id_user
  * @property int $id_company
  * @property string $created_at
  * @property string $updated_at
@@ -31,5 +32,5 @@ class Category extends Model
     /**
      * @var array
      */
-    protected $fillable = ['nombre', 'type', 'id_company', 'created_at', 'updated_at'];
+    protected $fillable = ['name', 'type', 'id_user', 'id_company', 'created_at', 'updated_at'];
 }

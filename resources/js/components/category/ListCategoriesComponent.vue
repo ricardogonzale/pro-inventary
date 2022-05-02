@@ -1,13 +1,13 @@
 <template>
     <v-data-table
         :headers="headers"
-        :items="equipments"
-        sort-by="id_equipment"
+        :items="categories"
+        sort-by="id_category"
         class="elevation-1"
     >
         <template v-slot:top>
             <v-toolbar flat>
-                <h2>Equipment</h2>
+                <h2>Category</h2>
             </v-toolbar>
             <v-toolbar flat>
                 <v-dialog v-model="dialog" max-width="400px">
@@ -22,7 +22,7 @@
                             v-on="on"
                             style="border-radius: 30px; text-transform: none"
                         >
-                            Create Equipment
+                            Create Category
                         </v-btn>
                     </template>
                     <v-card>
@@ -40,28 +40,24 @@
                                 <v-container>
                                     <v-row>
                                         <v-col cols="12" sm="12" md="12">
-                                            <h6>EQUIPMENT INFORMATION</h6>
+                                            <h6>CATEGORY INFORMATION</h6>
                                             <br />
                                         </v-col>
                                         <v-col cols="12" sm="12" md="12">
-                                            <v-select
-                                                :items="categories"
-                                                item-text="name"
-                                                item-value="id_category"
-                                                label="Category"
-                                                v-model="editedItem.categories"
+                                            <v-text-field
+                                                v-model="editedItem.type"
+                                                label="Type"
+                                                :counter="255"
                                                 required
-                                                @change="
-                                                    $v.editedItem.categories.$touch()
+                                                @input="
+                                                    $v.editedItem.type.$touch()
                                                 "
                                                 @blur="
-                                                    $v.editedItem.categories.$touch()
+                                                    $v.editedItem.type.$touch()
                                                 "
-                                                :error-messages="
-                                                    categoriesErrors
-                                                "
+                                                :error-messages="typeErrors"
                                                 outlined
-                                            ></v-select>
+                                            ></v-text-field>
                                         </v-col>
                                         <v-col cols="12" sm="12" md="12">
                                             <v-text-field
@@ -76,34 +72,6 @@
                                                     $v.editedItem.name.$touch()
                                                 "
                                                 :error-messages="nameErrors"
-                                                outlined
-                                            ></v-text-field>
-                                        </v-col>
-                                        <v-col cols="12" sm="12" md="12">
-                                            <v-text-field
-                                                v-model="editedItem.barCode"
-                                                label="Bar Code"
-                                                outlined
-                                            ></v-text-field>
-                                        </v-col>
-                                        <v-col cols="12" sm="12" md="4">
-                                            <v-text-field
-                                                v-model="editedItem.stock"
-                                                label="Stock"
-                                                outlined
-                                            ></v-text-field>
-                                        </v-col>
-                                        <v-col cols="12" sm="12" md="4">
-                                            <v-text-field
-                                                v-model="editedItem.stock_min"
-                                                label="Stock Min"
-                                                outlined
-                                            ></v-text-field>
-                                        </v-col>
-                                        <v-col cols="12" sm="12" md="4">
-                                            <v-text-field
-                                                v-model="editedItem.price"
-                                                label="Price"
                                                 outlined
                                             ></v-text-field>
                                         </v-col>
@@ -160,71 +128,51 @@
     </v-data-table>
 </template>
 <script>
-import axios from "axios";
 import { validationMixin } from "vuelidate";
-import {
-    required,
-    maxLength,
-    minLength,
-    email,
-} from "vuelidate/lib/validators";
+import { required, maxLength } from "vuelidate/lib/validators";
 
 export default {
     mixins: [validationMixin],
     validations: {
         editedItem: {
             name: { required, maxLength: maxLength(255) },
-            categories: { required },
+            type: { required },
         },
     },
     data: () => ({
         dialog: false,
         dialogDelete: false,
-        files: [],
-        categories: [],
-        value: [],
         headers: [
-            { text: "Id", value: "id_equipment" },
+            { text: "Id", value: "id_category" },
             {
-                text: "Name",
+                text: "Type",
                 align: "start",
-                value: "name",
+                value: "type",
             },
-            { text: "Barcode", value: "barCode" },
-            { text: "Stock", value: "stock" },
-            { text: "Min Stock", value: "stock_min" },
-            { text: "Price", value: "price" },
+            { text: "Name", value: "name" },
             { text: "Actions", value: "actions", sortable: false },
         ],
         editedIndex: -1,
         editedItem: {
-            id_equipment: null,
-            categories: "",
+            id_category: null,
+            type: "",
             name: "",
-            barCode: "",
-            stock: "",
-            stock_min: "",
-            price: "",
         },
         defaultItem: {
-            id_equipment: null,
-            categories: null,
+            id_category: null,
+            type: "",
             name: "",
-            barCode: "",
-            stock: "",
-            stock_min: "",
-            price: "",
         },
     }),
 
     computed: {
-        equipments: {
+        categories: {
             get() {
-                return this.$store.state.equipment.equipments;
+                return this.$store.state.category.categories;
             },
         },
         formTitle() {
-            return this.editedIndex === -1 ? "New Equipment" : "Edit Equipment";
+            return this.editedIndex === -1 ? "New Category" : "Edit Category";
         },
         nameErrors() {
             const errors = [];
@@ -235,11 +183,15 @@ export default {
                 errors.push("The field must not contain more than 255 digits.");
             return errors;
         },
-        categoriesErrors() {
+        typeErrors() {
             const errors = [];
-            if (!this.$v.editedItem.categories.$dirty) return errors;
-            !this.$v.editedItem.categories.required &&
-                errors.push("This field is required");
+            if (!this.$v.editedItem.name.$dirty) return errors;
+            !this.$v.editedItem.name.required &&
+                errors.push("This field is required.");
+            /*
+            !this.$v.editedItem.name.maxLength &&
+                errors.push("The field must not contain more than 255 digits.");
+            */
             return errors;
         },
     },
@@ -259,28 +211,28 @@ export default {
 
     methods: {
         initialize() {
-            this.equipments = [];
+            this.categories = [];
         },
 
         editItem(item) {
-            this.editedIndex = this.equipments.indexOf(item);
+            this.editedIndex = this.categories.indexOf(item);
             this.editedItem = Object.assign({}, item);
             this.dialog = true;
         },
 
         deleteItem(item) {
             console.log(item);
-            this.editedIndex = this.equipments.indexOf(item);
+            this.editedIndex = this.categories.indexOf(item);
             this.editedItem = Object.assign({}, item);
             this.dialogDelete = true;
         },
 
         deleteItemConfirm() {
-            this.equipments.splice(this.editedIndex, 1);
+            this.categories.splice(this.editedIndex, 1);
             this.$store
-                .dispatch("deleteEquipment", this.editedItem)
+                .dispatch("deleteCategory", this.editedItem)
                 .then((res) => {
-                    this.$store.dispatch("getEquipments");
+                    this.$store.dispatch("getCategories");
                 })
                 .catch((error) => {
                     console.log(error.response.data);
@@ -305,13 +257,6 @@ export default {
                 this.editedIndex = -1;
             });
         },
-        getCategories: function () {
-            axios.get("/getCategories").then(
-                function (response) {
-                    this.categories = response.data;
-                }.bind(this)
-            );
-        },
         save() {
             this.$v.$touch();
             if (this.$v.$invalid) {
@@ -325,9 +270,9 @@ export default {
 
             if (this.editedIndex > -1) {
                 this.$store
-                    .dispatch("updateEquipment", formData)
+                    .dispatch("updateCategory", formData)
                     .then((res) => {
-                        this.$store.dispatch("getEquipments");
+                        this.$store.dispatch("getCategories");
                     })
                     .catch((error) => {
                         console.log(error.response.data);
@@ -335,9 +280,9 @@ export default {
                     });
             } else {
                 this.$store
-                    .dispatch("registerEquipment", formData)
+                    .dispatch("registerCategory", formData)
                     .then((res) => {
-                        this.$store.dispatch("getEquipments");
+                        this.$store.dispatch("getCategories");
                     })
                     .catch((error) => {
                         console.log(error.response.data);
@@ -348,8 +293,7 @@ export default {
         },
     },
     mounted() {
-        this.$store.dispatch("getEquipments");
-        this.getCategories();
+        this.$store.dispatch("getCategories");
     },
 };
 </script>

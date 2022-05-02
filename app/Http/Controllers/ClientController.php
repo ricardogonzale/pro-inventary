@@ -53,8 +53,7 @@ class ClientController extends Controller
 
     public function list(Client $client)
     {
-        $model = Client::all();
-        $model = Client::where('id_user', '=', Auth::user()->id)->get();
+        $model = Client::where('id_company', '=', Auth::user()->id_company)->get();
         return response()->json($model);
     }
 

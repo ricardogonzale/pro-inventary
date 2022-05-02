@@ -294,6 +294,18 @@ export default {
                 {
                     text: "Configuración",
                     icon: "mdi-tools",
+                    type: 1,
+                    items: [
+                        {
+                            title: "Categories",
+                            icon: "mdi-account-plus",
+                            link: "/listcategories",
+                        },
+                    ],
+                },
+                {
+                    text: "Configuración",
+                    icon: "mdi-tools",
                     type: 0,
                     items: [
                         {

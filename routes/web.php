@@ -25,7 +25,7 @@ Route::post('/updateClient', 'HomeController@updateCliente')->name('updateClient
 Route::post('/deleteClient', 'HomeController@deleteCliente')->name('deleteClient');
 
 Route::get('getState', 'GeoStateController@list')->name('State.list');
-
+Route::get('getCategories', 'CategoryController@list')->name('Categories.list');
 
 Route::get('getClientlist', 'ClientController@list')->name('cliente.list');
 Route::get('getClientshow/{id}', 'ClientController@show')->name('cliente.show');
@@ -39,3 +39,12 @@ Route::post('/deleteCompany', 'CompanyController@destroy')->name('deleteCompany'
 
 Route::get('getEquipmentlist', 'EquipmentController@list')->name('equipment.list');
 Route::get('getEquipmentshow/{id}', 'EquipmentController@show')->name('equipment.show');
+Route::post('/newEquipment', 'EquipmentController@create')->name('newEquipment');
+Route::post('/updateEquipment', 'EquipmentController@update')->name('updateEquipment');
+Route::post('/deleteEquipment', 'EquipmentController@destroy')->name('deleteEquipment');
+
+Route::get('getCategorylist', 'CategoryController@list')->name('category.list');
+Route::get('getCategoryshow/{id}', 'CategoryController@show')->name('category.show');
+Route::post('/newCategory', 'CategoryController@create')->name('newCategory');
+Route::post('/updateCategory', 'CategoryController@update')->name('updateCategory');
+Route::post('/deleteCategory', 'CategoryController@destroy')->name('deleteCategory');

@@ -23,9 +23,15 @@ class EquipmentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $data)
     {
-        //
+        $contact = $data->all();
+        $contact['data'] = json_decode($contact['data'],true);
+        $contact['data']['info']['id_user'] = Auth::user()->id;
+        $contact['data']['info']['id_company'] = Auth::user()->id_company;
+        $client = Equipment::Create($contact['data']['info']);
+
+        return $client;
     }
 
     /**
@@ -54,8 +60,7 @@ class EquipmentController extends Controller
 
     public function list(Equipment $client)
     {
-        $model = Equipment::all();
-        $model = Equipment::where('id_user', '=', Auth::user()->id)->get();
+        $model = Equipment::where('id_company', '=', Auth::user()->id_company)->get();
         return response()->json($model);
     }
     /**
@@ -76,9 +81,12 @@ class EquipmentController extends Controller
      * @param  \App\Equipment  $equipment
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Equipment $equipment)
+    public function update(Request $data)
     {
-        //
+        $equipment = $data->all();
+        $equipment['data'] = json_decode($equipment['data'],true);
+        $equipment = Equipment::updateOrCreate(['id_equipment' => $equipment['data']['info']['id_equipment']],$equipment['data']['info']);
+        return $equipment;
     }
 
     /**
@@ -87,8 +95,8 @@ class EquipmentController extends Controller
      * @param  \App\Equipment  $equipment
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Equipment $equipment)
+    public function destroy(Request $id)
     {
-        //
+        $deletedEquipment = Equipment::where('id_equipment', $id['id_equipment'])->delete();
     }
 }

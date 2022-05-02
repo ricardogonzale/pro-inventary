@@ -41,10 +41,9 @@ class HomeController extends Controller
     protected function updateCliente(Request $data)
     {
 
-        $contact = $data->all();
-        $contact['data'] = json_decode($contact['data'],true);
-
-        $client = Client::updateOrCreate(['id_user' => $contact['data']['info']['id_user']],$contact['data']['info']);
+        $client = $data->all();
+        $client['data'] = json_decode($client['data'],true);
+        $client = Client::updateOrCreate(['id' => $client['data']['info']['id']],$client['data']['info']);
         return $client;
     }
 
@@ -53,6 +52,7 @@ class HomeController extends Controller
         $contact = $data->all();
         $contact['data'] = json_decode($contact['data'],true);
         $contact['data']['info']['id_user'] = Auth::user()->id;
+        $contact['data']['info']['company'] = Auth::user()->company;
         
         if ($contact['imagen']['img'] != 'undefined'){
             $file = $contact['imagen']['img'];

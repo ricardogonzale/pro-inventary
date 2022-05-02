@@ -1,28 +1,28 @@
-import EquipmentApi from "../api/equipment.js";
+import CategoryApi from "../api/category";
 
 export default {
     state: {
-        equipments: [],
+        categories: [],
     } /* END OF STATE */,
 
     getters: {} /* END OF GETTERS */,
 
     mutations: {
-        SET_EQUIPMENTSDATA(state, equipments) {
-            state.equipments = equipments;
+        SET_CATEGORIESDATA(state, categories) {
+            state.categories = categories;
         },
     } /* END OF MUTATIONS */,
 
     actions: {
-        async getEquipments({ commit }) {
-            await axios.get("/getEquipmentlist").then((response) => {
-                commit("SET_EQUIPMENTSDATA", response.data);
+        async getCategories({ commit }) {
+            await axios.get("/getCategorylist").then((response) => {
+                commit("SET_CATEGORIESDATA", response.data);
             });
         },
 
-        registerEquipment({ commit }, data) {
+        registerCategory({ commit }, data) {
             return new Promise((resolve, reject) => {
-                EquipmentApi.register(data)
+                CategoryApi.register(data)
                     .then((res) => {
                         resolve(res);
                     })
@@ -32,9 +32,9 @@ export default {
             });
         },
 
-        updateEquipment({ commit }, data) {
+        updateCategory({ commit }, data) {
             return new Promise((resolve, reject) => {
-                EquipmentApi.update(data)
+                CategoryApi.update(data)
                     .then((res) => {
                         resolve(res);
                     })
@@ -44,9 +44,9 @@ export default {
             });
         },
 
-        deleteEquipment({ commit }, data) {
+        deleteCategory({ commit }, data) {
             return new Promise((resolve, reject) => {
-                EquipmentApi.delete(data)
+                CategoryApi.delete(data)
                     .then((res) => {
                         resolve(res);
                     })

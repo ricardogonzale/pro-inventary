@@ -40,6 +40,8 @@ class CompanyController extends Controller
         // auth()->login($user);
         $contact['data']['info']['id_user'] = $user['id'];
         $client = Company::updateOrCreate(['id_user' => $contact['data']['info']['id_user']],$contact['data']['info']);
+        $user->id_company = $client->id_company;
+        $user->save();
         return $user;
     }
 
