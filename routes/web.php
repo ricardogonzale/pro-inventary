@@ -48,3 +48,15 @@ Route::get('getCategoryshow/{id}', 'CategoryController@show')->name('category.sh
 Route::post('/newCategory', 'CategoryController@create')->name('newCategory');
 Route::post('/updateCategory', 'CategoryController@update')->name('updateCategory');
 Route::post('/deleteCategory', 'CategoryController@destroy')->name('deleteCategory');
+
+Route::get('getDivisionlist', 'DivisionController@list')->name('division.list');
+Route::get('getDivisionshow/{id}', 'DivisionController@show')->name('division.show');
+Route::post('/newDivision', 'DivisionController@create')->name('newDivision');
+Route::post('/updateDivision', 'DivisionController@update')->name('updateDivision');
+Route::post('/deleteDivision', 'DivisionController@destroy')->name('deleteDivision');
+
+Route::get('getBranchlist', 'BranchController@list')->name('branch.list');
+Route::get('getBranchshow/{id}', 'BranchController@show')->name('branch.show');
+Route::post('/newBranch', 'BranchController@create')->name('newBranch');
+Route::post('/updateBranch', 'BranchController@update')->name('updateBranch');
+Route::post('/deleteBranch', 'BranchController@destroy')->name('deleteBranch');

@@ -6,6 +6,7 @@ import ListClients from "./components/clients/ListClientsComponent.vue";
 import ListCompanys from "./components/company/ListCompanysComponent.vue";
 import ListEquipment from "./components/equipment/ListEquipmentsComponent.vue";
 import ListCategories from "./components/category/ListCategoriesComponent.vue";
+import ListDivisions from "./components/division/ListDivisionsComponent.vue";
 
 Vue.use(VueRouter);
 
@@ -31,6 +32,11 @@ const router = new VueRouter({
             path: "/listcategories",
             name: "List Categories",
             component: ListCategories,
+        },
+        {
+            path: "/listdivisions",
+            name: "List Divisions",
+            component: ListDivisions,
         },
     ],
 });

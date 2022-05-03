@@ -7,6 +7,7 @@ import company from "./modules/company.js";
 import client from "./modules/client.js";
 import equipment from "./modules/equipment.js";
 import category from "./modules/category.js";
+import division from "./modules/division.js";
 
 export default new Vuex.Store({
     state: {
@@ -31,5 +32,6 @@ export default new Vuex.Store({
         company,
         equipment,
         category,
+        division,
     },
 });

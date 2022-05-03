@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Division;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DivisionController extends Controller
 {
@@ -22,9 +23,15 @@ class DivisionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $data)
     {
-        //
+        $division = $data->all();
+        $division['data'] = json_decode($division['data'],true);
+        $division['data']['info']['id_user'] = Auth::user()->id;
+        $division['data']['info']['id_company'] = Auth::user()->id_company;
+        $division = Division::Create($division['data']['info']);
+
+        return $division;
     }
 
     /**
@@ -46,9 +53,15 @@ class DivisionController extends Controller
      */
     public function show(Division $division)
     {
-        //
+        $model = Division::find($id);
+        return response()->json($model);
     }
 
+    public function list()
+    {
+        $model = Division::where('id_company', '=', Auth::user()->id_company)->get();
+        return response()->json($model);
+    }
     /**
      * Show the form for editing the specified resource.
      *
@@ -67,9 +80,12 @@ class DivisionController extends Controller
      * @param  \App\Division  $division
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Division $division)
+    public function update(Request $data)
     {
-        //
+        $division = $data->all();
+        $division['data'] = json_decode($division['data'],true);
+        $division = Division::updateOrCreate(['id_division' => $division['data']['info']['id_division']],$division['data']['info']);
+        return $division;
     }
 
     /**
@@ -78,8 +94,8 @@ class DivisionController extends Controller
      * @param  \App\Division  $division
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Division $division)
+    public function destroy(Request $id)
     {
-        //
+        $deletedDivision = Division::where('id_division', $id['id_division'])->delete();
     }
 }

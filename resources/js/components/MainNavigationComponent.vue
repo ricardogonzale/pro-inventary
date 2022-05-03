@@ -301,6 +301,11 @@ export default {
                             icon: "mdi-account-plus",
                             link: "/listcategories",
                         },
+                        {
+                            title: "Divisions",
+                            icon: "mdi-account-plus",
+                            link: "/listdivisions",
+                        },
                     ],
                 },
                 {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Branch;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BranchController extends Controller
 {
@@ -22,9 +23,15 @@ class BranchController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $data)
     {
-        //
+        $branch = $data->all();
+        $branch['data'] = json_decode($branch['data'],true);
+        $branch['data']['info']['id_user'] = Auth::user()->id;
+        $branch['data']['info']['id_company'] = Auth::user()->id_company;
+        $branch = Branch::Create($branch['data']['info']);
+
+        return $branch;
     }
 
     /**
@@ -46,9 +53,15 @@ class BranchController extends Controller
      */
     public function show(Branch $branch)
     {
-        //
+        $model = Branch::find($id);
+        return response()->json($model);
     }
 
+    public function list()
+    {
+        $model = Branch::where('id_company', '=', Auth::user()->id_company)->get();
+        return response()->json($model);
+    }
     /**
      * Show the form for editing the specified resource.
      *
@@ -67,9 +80,12 @@ class BranchController extends Controller
      * @param  \App\Branch  $branch
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Branch $branch)
+    public function update(Request $data)
     {
-        //
+        $branch = $data->all();
+        $branch['data'] = json_decode($branch['data'],true);
+        $branch = Branch::updateOrCreate(['id' => $branch['data']['info']['id']],$branch['data']['info']);
+        return $branch;
     }
 
     /**
@@ -78,8 +94,8 @@ class BranchController extends Controller
      * @param  \App\Branch  $branch
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Branch $branch)
+    public function destroy(Request $id)
     {
-        //
+        $deletedBranch = Branch::where('id', $id['id'])->delete();
     }
 }
